@@ -23,6 +23,9 @@ the README's "Duress and panic" and wrong-PIN rules).
 - **Removed** the "MAIN PROFILE / DECOY PROFILE" label inside the phone: the app never shows
   which profile is open. The panel shows it instead, outside the phone. Also removed the panic
   information screen; its content is now something you can do.
+- Cache tags on the CSS and JS moved to `2026-11-16-pins` (follow-up commit): the first push
+  kept the earlier tag, so a browser that had visited before could keep the old script for up to
+  10 minutes and the new buttons did nothing.
 - "Create profiles" and "Skip to unlocked demo" act as a first install. The demo contact's
   reply about PINs explains how to try them.
 
