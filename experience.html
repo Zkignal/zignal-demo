@@ -23,7 +23,24 @@
         <p>Zignal’s real iOS app carries end-to-end encrypted messages in shielded Zcash transactions. Explore the experience below, then see how its privacy design works.</p>
         <div class="intro-note"><span>ⓘ</span><div><strong>Everything on the phone is simulated.</strong><br>No account, network, wallet, encryption, or protective features are created here.</div></div>
         <p class="tech-source">Updated from the Zignal repository’s <code>dev</code> branch at <a href="https://github.com/Zkignal/zignal/tree/e7bd41866dcb35eccb38ac5d49c950add274fe27" target="_blank" rel="noopener noreferrer">e7bd418 ↗</a>. TestFlight is not public yet. This preview illustrates documented changes; it does not verify the real app’s fixes.</p>
-        <div class="instruction"><span class="instruction-number">01</span><span>Use the phone to explore<br><strong>Tap “Get started” to begin</strong></span><span class="arrow">↗</span></div>
+        <aside class="demo-panel" aria-labelledby="panel-title">
+          <div class="panel-head"><strong id="panel-title">Demo controls</strong><span>Outside the phone</span></div>
+          <div class="panel-pins" aria-label="Demo PINs">
+            <div><span>Unlock PIN</span><code>111111</code></div>
+            <div><span>Duress PIN</span><code>222222</code></div>
+            <div><span>Panic PIN</span><code>333333</code></div>
+          </div>
+          <p class="panel-warn">Fictional PINs for this demo. Never type a real PIN here. Anything else counts as a wrong PIN; nothing you type is kept after a reload or sent anywhere.</p>
+          <dl class="panel-state" aria-live="polite">
+            <div><dt>Install</dt><dd id="state-install">Fresh, not set up</dd></div>
+            <div><dt>On screen</dt><dd id="state-open">Welcome</dd></div>
+            <div><dt>Real profile</dt><dd id="state-real">Not created yet</dd></div>
+            <div><dt>Wrong-PIN tries</dt><dd id="state-tries">0 (5 are free)</dd></div>
+          </dl>
+          <p class="panel-note">The real app never shows which profile is open. This panel exists only in the demo, so you can see what the PINs did.</p>
+          <p class="panel-try"><strong>Try it:</strong> Get started, Create profiles, lock (top left), enter <code>333333</code>, then lock and enter <code>111111</code>.</p>
+          <button class="panel-reset" id="reset-demo">Reset demo (fresh install)</button>
+        </aside>
       </div>
       <div class="phone-column">
         <div class="phone" aria-label="Interactive Zignal iOS simulation">
@@ -40,17 +57,17 @@
                   <li><span>◉</span>A duress PIN opens a decoy profile. A panic PIN also erases the real one.</li>
                 </ul>
               </div>
-              <div class="welcome-actions"><button class="big-blue" data-screen="setup">Get started</button><button class="demo-action" data-screen="chats">Skip to unlocked demo</button><button class="plain" data-screen="recovery">Restore from recovery phrase</button><p>Real app: experimental and not audited.<br>Browser preview: simulation only.</p></div>
+              <div class="welcome-actions"><button class="big-blue" data-screen="setup">Get started</button><button class="demo-action" id="skip-setup">Skip to unlocked demo</button><button class="plain" data-screen="recovery">Restore from recovery phrase</button><p>Real app: experimental and not audited.<br>Browser preview: simulation only.</p></div>
             </section>
             <section class="screen grouped" id="setup" aria-label="Set PINs">
               <div class="nav"><button class="back" data-screen="welcome" aria-label="Back to welcome">‹</button><strong>Set PINs</strong><span></span></div>
               <div class="scroll"><div class="section-label">YOU'LL SET 3 DIFFERENT PINS</div>
                 <div class="group roles"><div><b>1</b><span><strong>Unlock PIN:</strong> opens your real profile.</span></div><div><b>2</b><span><strong>Duress PIN:</strong> opens a decoy profile if someone forces you.</span></div><div><b>3</b><span><strong>Panic PIN:</strong> erases your real profile, then opens the decoy.</span></div></div>
-                <p class="section-foot sim-note">Simulation: this demo never asks for or creates PINs. The PIN fields of the real screen are left out.</p>
+                <p class="section-foot sim-note">Simulation: the PIN fields of the real screen are left out. “Create profiles” sets the demo PINs shown beside the phone: 111111, 222222 and 333333.</p>
                 <div class="section-label">1. UNLOCK PIN</div><p class="section-foot">Opens your real profile. At least 6 digits. Forgot it? Restore with your 24-word recovery phrase. Chats can't be restored.</p>
                 <div class="section-label">2. DURESS PIN</div><p class="section-foot">Use this if someone forces you to open Zignal.<br>• Opens a decoy profile with its own wallet and chats.<br>• Never deletes anything.<br>• Both profiles are stored the same way, so a quick look at the phone won't show which one is real.<br>Tip: open the decoy now and then and keep a little ZEC in it, so it looks like an account you really use.</p>
                 <div class="section-label">3. PANIC PIN</div><div class="group toggle-row"><span>I understand this can't be undone <small>Real app switch · shown off</small></span><span class="toggle" aria-hidden="true"><span></span></span></div><p class="section-foot">Your last resort. It can't be undone.<br>• Quietly erases your real profile from this phone: its chats, wallet data and unlock PIN.<br>• Then opens the decoy as if nothing happened.<br>• Your real funds come back only with your 24-word recovery phrase. Keep it written down, away from this phone.<br>• Erased chats are gone for good.<br>Pick a PIN you won't type by accident.</p>
-                <button class="big-blue" data-screen="chats">Create profiles (simulated)</button><p class="center-foot">Real app: your PINs never leave this phone. Securing them takes a few seconds. Here, no profiles or wallets are created.</p>
+                <button class="big-blue" id="create-profiles">Create profiles (simulated)</button><p class="center-foot">Real app: your PINs never leave this phone. Securing them takes a few seconds. Here, two fictional profiles are made in page memory.</p>
               </div>
             </section>
             <section class="screen grouped" id="recovery" aria-label="Recovery phrase">
@@ -58,8 +75,8 @@
               <div class="scroll"><div class="section-label">RECOVERY PHRASE</div><div class="group text-group">This preview cannot restore a wallet. Never enter or share a real recovery phrase here.</div><p class="section-foot">The real app asks for the 24 words and the date the wallet was created (“Pick a date on or before you first used this phrase. Earlier is safe but makes the first sync slower.”). The phrase becomes your real profile; chat history isn’t part of a phrase, so chats start empty, and the decoy profile gets a new phrase of its own.</p><button class="big-blue" data-screen="setup">Explore setup instead</button></div>
             </section>
             <section class="screen chats" id="chats" aria-label="Chats">
-              <div class="toolbar"><button class="circle" data-screen="lock" aria-label="Lock and preview profiles"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="10" width="12" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></button><div class="toolbar-group"><button class="circle" data-screen="recovery-info" aria-label="Recovery phrase information"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M10 11v9h4v-3h-2v-3h2v-3"/></svg></button><button class="circle" data-screen="new-chat" aria-label="New chat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5H5v15h15v-8M12 12 21 3m-6 0h6v6"/></svg></button></div></div>
-              <div class="scroll"><h2 class="large-title">Chats</h2><div class="profile-caption" id="profile-caption">MAIN PROFILE · SIMULATED</div>
+              <div class="toolbar"><button class="circle" id="lock-button" aria-label="Lock"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="10" width="12" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></button><div class="toolbar-group"><button class="circle" data-screen="recovery-info" aria-label="Recovery phrase information"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M10 11v9h4v-3h-2v-3h2v-3"/></svg></button><button class="circle" data-screen="new-chat" aria-label="New chat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5H5v15h15v-8M12 12 21 3m-6 0h6v6"/></svg></button></div></div>
+              <div class="scroll"><h2 class="large-title">Chats</h2>
                 <button class="recovery-banner" data-screen="recovery-info"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M10 11v9h4v-3h-2v-3h2v-3"/></svg>Back up your recovery phrase</button><p class="section-foot recovery-note">Without it, a lost phone means a lost wallet. (Preview: no recovery phrase exists here.)</p><div class="section-label">WALLET</div>
                 <div class="group wallet"><div class="wallet-status"><span>◉ &nbsp; Up to date</span><span><strong id="wallet-balance">0.01200000 DEMO</strong><small>Fictional balance</small></span></div><div class="wallet-buttons"><button data-screen="funds">▦ &nbsp; Add funds</button><button id="prepare-button">⊞ &nbsp; <span>Prepare</span></button><button data-screen="network" aria-label="Network settings">◎</button></div><div class="wallet-ready" id="wallet-ready" role="status">Simulation: Prepare splits only when helpful.</div><button class="demo-action" id="confirm-prepare" hidden>Simulate confirmations</button></div>
                 <p class="section-foot">Each message is one shielded Zcash transaction and costs about 0.0001 ZEC in network fees. “Prepare” splits your balance into a few notes, once, so several messages can go out in a row.</p>
@@ -74,9 +91,16 @@
               <div class="chat-scroll" id="messages" role="log" aria-label="Simulated conversation" aria-live="polite" aria-relevant="additions"></div>
               <form id="message-form" class="composer"><label class="sr-only" for="message">Demo message</label><input id="message" maxlength="4000" placeholder="Message" autocomplete="off" autocapitalize="sentences" spellcheck="false"><button type="submit" aria-label="Add demo message">↑</button></form><div class="input-warning"><span id="byte-count">0 / 4000</span> · Demo only · Never enter personal information or secrets.</div>
             </section>
-            <section class="screen grouped" id="lock" aria-label="Profile preview">
-              <div class="nav"><button class="back" data-screen="chats" aria-label="Back to chats">‹</button><strong>Profile preview</strong><span></span></div>
-              <div class="scroll"><div class="section-label">SIMULATE AN UNLOCK</div><div class="group choices"><button data-profile="main"><strong>Unlock</strong><span>Open the fictional main profile</span>›</button><button data-profile="decoy"><strong>Duress</strong><span>Open a fictional decoy profile</span>›</button><button data-screen="panic"><strong>Panic</strong><span>Learn what the real app intends to do</span>›</button></div><p class="section-foot">No PIN is entered or checked. These are sample screens, not protection against coercion.</p></div>
+            <section class="screen unlock" id="lock" aria-label="Enter PIN">
+              <form class="unlock-content" id="unlock-form" autocomplete="off">
+                <svg class="shield" viewBox="0 0 64 72" fill="none" aria-hidden="true"><path d="M32 4 55 13v19c0 16-10 27-23 34C19 59 9 48 9 32V13L32 4Z" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><rect x="22" y="30" width="20" height="17" rx="3" fill="currentColor"/><path d="M26 30v-6a6 6 0 0 1 12 0v6" stroke="currentColor" stroke-width="4"/></svg>
+                <h2>Enter PIN</h2>
+                <label class="sr-only" for="pin">PIN (demo PINs only)</label>
+                <input id="pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="12" placeholder="PIN" autocomplete="off" spellcheck="false">
+                <button class="unlock-button" id="unlock-button" type="submit" disabled>Unlock</button>
+                <p class="pin-status" id="pin-status" role="status"></p>
+                <p class="center-foot">Demo PINs only (beside the phone). Waits after wrong PINs are shortened for the demo: 5 seconds doubling up to 1 minute. The real app waits 30 seconds, doubling up to 1 hour.</p>
+              </form>
             </section>
             <section class="screen grouped" id="send-recovery" aria-label="Interrupted-send simulation">
               <div class="nav"><button class="back" data-screen="chats" aria-label="Back to chats">‹</button><strong>Send recovery</strong><span></span></div>
@@ -85,10 +109,6 @@
                 <button class="big-blue" id="send-step">Simulate sending</button><button class="demo-action" id="send-missing" hidden>Simulate send needs retry</button><button class="demo-action" id="send-restart">Restart walkthrough</button>
                 <p class="section-foot">No transaction is built, checked, or broadcast. Retry illustrates reuse of a transaction still held by the wallet; if it is unavailable or expired, the real app may need to build another.</p>
               </div>
-            </section>
-            <section class="screen grouped" id="panic" aria-label="Panic PIN information">
-              <div class="nav"><button class="back" data-screen="lock" aria-label="Back to profile preview">‹</button><strong>Panic PIN</strong><span></span></div>
-              <div class="scroll"><div class="section-label">REAL APP CONCEPT</div><div class="group text-group">The real app describes a panic PIN that erases the real profile on the phone and opens the decoy. This cannot be undone. Wallet funds require the recovery phrase; erased chats cannot be recovered.</div><p class="section-foot">Dev moves cleanup after the decoy appears and resumes interrupted cleanup on a later decoy unlock. The source still lists wipe traces as a limitation, not a solved forensic problem.</p><p class="section-foot">This browser demo deletes nothing. A real wipe does not erase server records, blockchain transactions, or contacts' copies.</p><button class="big-blue" data-profile="decoy">Preview decoy (no deletion)</button></div>
             </section>
             <section class="screen grouped" id="funds" aria-label="Add funds information">
               <div class="nav"><button class="back" data-screen="chats" aria-label="Back to chats">‹</button><strong>Add funds</strong><span></span></div><div class="scroll"><div class="section-label">SIMULATION ONLY</div><div class="group text-group">The real app shows a QR code and a shielded address with “Copy address”. This preview has no address, QR code, real wallet, or funds.</div><p class="section-foot">Real app: “Send ZEC from any wallet that supports shielded (Orchard) addresses. It can be spent after 10 confirmations, about 4 minutes. Start small: a few hundred messages cost about 0.03 ZEC.”</p><p class="section-foot">Do not send money to anything described in this demo.</p><button class="big-blue" data-screen="chats">Done</button></div>

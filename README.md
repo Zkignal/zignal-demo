@@ -13,8 +13,9 @@ messaging protocol, privacy model, network trade-offs and roadmap. It explains w
 makes Zignal different from an ordinary Zcash wallet memo without implying that any
 encryption or security runs in the browser.
 
-The site labels every simulated area and never asks for PINs, recovery phrases,
-credentials or personal information. It makes no claim that Zignal is unbreakable
+The site labels every simulated area and never asks for recovery phrases, credentials or
+personal information. The only PINs it takes are three fictional demo PINs printed beside the
+phone; anything else is a wrong PIN, and nothing typed is kept after a reload or sent. It makes no claim that Zignal is unbreakable
 or anonymous. The real app describes itself as experimental and unaudited.
 
 ## Files
@@ -30,9 +31,19 @@ or anonymous. The real app describes itself as experimental and unaudited.
 
 ## What you can try
 
-- **Welcome and setup:** informational screens for the three PINs and recovery.
-  No PIN or recovery input is collected.
-- **Chats:** switch between fictional main and decoy profiles and exchange sample
+- **Welcome and setup:** the app's own text for the three PINs. "Create profiles" acts as a
+  first install: it sets the demo PINs and makes two fictional profiles in page memory.
+- **Lock and the three PINs:** the lock button opens the app's "Enter PIN" screen. Demo PINs:
+  `111111` (unlock) opens the real profile, `222222` (duress) opens the decoy, and `333333`
+  (panic) silently erases the real profile's chats, contacts and wallet from page memory and
+  opens the decoy. After that the unlock PIN is a wrong PIN, and the duress and panic PINs
+  both open the decoy, as in the app at `e7bd418`. 5 wrong PINs are free; after that each try
+  waits, shortened for the demo to 5 seconds doubling up to 1 minute (the app: 30 seconds,
+  doubling up to 1 hour). A successful unlock resets the count.
+- **Demo controls (beside the phone):** the demo PINs, what is on screen, whether the real
+  profile still exists, the wrong-PIN count, and "Reset demo (fresh install)". The real app
+  never shows which profile is open; the panel exists only so visitors can see what the PINs did.
+- **Chats:** the real or decoy profile, each with its own fictional wallet, and sample
   messages with local scripted contacts. Replies match topics such as greetings,
   invites, Tor, Prepare, wallet fees and the simulation's limits; anything else gets
   a labelled echo. This is not AI. Messages are shown as text and never sent.

@@ -2,47 +2,59 @@
 
 const screens = document.querySelectorAll(".screen");
 let profile = "main";
-const profiles = {
-  main: {
-    balance: "0.01200000 DEMO",
-    readiness: "prepare",
-    sendState: 0,
-    recording: false,
-    screenshot: false,
-    tor: false,
-    selectedContact: "demo",
-    contacts: {
-      demo: {
-        name: "Demo contact",
-        verified: false,
-        messages: [
-          {side: "incoming", text: "Hi! This conversation is only a simulation."},
-          {side: "outgoing", text: "I'm exploring Zignal's demo."},
-          {side: "incoming", text: "Welcome! Say hello, or ask about invites, Tor, or Prepare."}
-        ]
+let profiles = freshProfiles();
+
+// What the simulated install knows. Kept in page memory only; a reload resets it.
+const PINS = {unlock: "111111", duress: "222222", panic: "333333"};
+const FREE_TRIES = 5;
+const DEMO_WAIT_START = 5;   // seconds; the real app starts at 30
+const DEMO_WAIT_MAX = 60;    // seconds; the real app stops at 1 hour
+const device = {installed: false, realExists: false, open: null, tries: 0, waitUntil: 0, checking: false};
+let waitTimer = null;
+
+function freshProfiles() {
+  return {
+    main: {
+      balance: "0.01200000 DEMO",
+      readiness: "prepare",
+      sendState: 0,
+      recording: false,
+      screenshot: false,
+      tor: false,
+      selectedContact: "demo",
+      contacts: {
+        demo: {
+          name: "Demo contact",
+          verified: false,
+          messages: [
+            {side: "incoming", text: "Hi! This conversation is only a simulation."},
+            {side: "outgoing", text: "I'm exploring Zignal's demo."},
+            {side: "incoming", text: "Welcome! Say hello, or ask about invites, Tor, or Prepare."}
+          ]
+        }
+      }
+    },
+    decoy: {
+      balance: "0.00350000 DEMO",
+      readiness: "prepare",
+      sendState: 0,
+      recording: false,
+      screenshot: false,
+      tor: false,
+      selectedContact: "demo",
+      contacts: {
+        demo: {
+          name: "Demo contact",
+          verified: false,
+          messages: [
+            {side: "incoming", text: "Hello from the fictional decoy profile."},
+            {side: "outgoing", text: "This is a separate sample conversation."}
+          ]
+        }
       }
     }
-  },
-  decoy: {
-    balance: "0.00350000 DEMO",
-    readiness: "prepare",
-    sendState: 0,
-    recording: false,
-    screenshot: false,
-    tor: false,
-    selectedContact: "demo",
-    contacts: {
-      demo: {
-        name: "Demo contact",
-        verified: false,
-        messages: [
-          {side: "incoming", text: "Hello from the fictional decoy profile."},
-          {side: "outgoing", text: "This is a separate sample conversation."}
-        ]
-      }
-    }
-  }
-};
+  };
+}
 
 function currentContact() {
   const current = profiles[profile];
@@ -119,7 +131,7 @@ function scriptedReply(text, contact) {
   const normalized = text.toLowerCase().replace(/[’']/g, "");
   const rules = [
     {match: /\b(recovery|phrase|seed|secret|password|credential)\b/, reply: "Please don't share real recovery words, passwords, or secrets. No recovery phrase exists here. The recovery screen uses placeholders only."},
-    {match: /\b(panic|duress|decoy|pin|pins)\b/, reply: "The real app describes unlock, duress, and panic PINs. Here you can preview main and decoy profiles from the lock button, without entering a PIN or deleting anything."},
+    {match: /\b(panic|duress|decoy|pin|pins)\b/, reply: "Lock with the button at the top left, then use the demo PINs beside the phone: 111111 opens this profile, 222222 the decoy, and 333333 erases this profile (in page memory only) and opens the decoy. Reset demo starts over."},
     {match: /\b(secure|security|safe|privacy|encrypt|encrypted|encryption|crypto|cryptography|anonymous)\b/, reply: "This page does not encrypt anything or provide security. It is a browser simulation. The real app's source describes its protections, but the project is experimental and unaudited."},
     {match: /\b(tor|vpn|network|server|servers|sync)\b/, reply: "The real app's Tor option covers sending and fetching transactions; syncing (block downloads, tree states and subtree roots) still connects directly. Open Network to try the illustrative switch; it changes no connections here."},
     {match: /\b(split|splits|splitting|notes)\b/, reply: "In the real wallet, a split divides a confirmed balance into smaller spendable notes, so several messages can go out without waiting for the previous message's change. Prepare does this only when helpful. Here it's just a simulated state."},
@@ -142,8 +154,6 @@ function scriptedReply(text, contact) {
 
 function renderProfile() {
   const current = profiles[profile];
-  document.getElementById("profile-caption").textContent =
-    profile === "decoy" ? "DECOY PROFILE · SIMULATED" : "MAIN PROFILE · SIMULATED";
   document.getElementById("wallet-balance").textContent = current.balance;
   renderReadiness();
   renderSendRecovery();
@@ -160,6 +170,7 @@ function showScreen(name) {
   screens.forEach(screen => screen.classList.toggle("active", screen === target));
   const scroll = target.querySelector(".scroll");
   if (scroll) scroll.scrollTop = 0;
+  renderPanel();
   if (name === "conversation") {
     const messages = document.getElementById("messages");
     messages.scrollTop = messages.scrollHeight;
@@ -170,12 +181,132 @@ document.querySelectorAll("[data-screen]").forEach(button => {
   button.addEventListener("click", () => showScreen(button.dataset.screen));
 });
 
-document.querySelectorAll("[data-profile]").forEach(button => {
-  button.addEventListener("click", () => {
-    profile = button.dataset.profile;
-    renderProfile();
-    showScreen("chats");
-  });
+// --- Install, lock and the three PINs (as in AppModel.unlock and VaultOps at e7bd418) ---
+
+function renderPanel() {
+  document.getElementById("state-install").textContent = device.installed ? "Set up, demo PINs active" : "Fresh, not set up";
+  const active = document.querySelector(".screen.active");
+  let open = "Setup";
+  if (device.installed) open = device.open === "main" ? "Real profile (unlock PIN)" : device.open === "decoy" ? "Decoy profile (duress or panic PIN)" : "Locked: Enter PIN";
+  else if (active && active.id === "welcome") open = "Welcome";
+  document.getElementById("state-open").textContent = open;
+  document.getElementById("state-real").textContent = !device.installed ? "Not created yet"
+    : device.realExists ? "On this phone" : "Erased by the panic PIN";
+  document.getElementById("state-tries").textContent = device.tries <= FREE_TRIES
+    ? `${device.tries} (${FREE_TRIES} are free)` : `${device.tries} (waiting after each)`;
+}
+
+function install() {
+  profiles = freshProfiles();
+  Object.assign(device, {installed: true, realExists: true, tries: 0, waitUntil: 0});
+  openProfile("main");
+}
+
+function openProfile(name) {
+  profile = name;
+  device.open = name;
+  renderProfile();
+  showScreen("chats");
+}
+
+function lock() {
+  device.open = null;
+  document.getElementById("pin").value = "";
+  document.getElementById("pin-status").textContent = "";
+  updateUnlockButton();
+  showScreen("lock");
+}
+
+function remainingWait() {
+  return Math.max(0, Math.ceil((device.waitUntil - Date.now()) / 1000));
+}
+
+function updateUnlockButton() {
+  const pin = document.getElementById("pin").value;
+  document.getElementById("unlock-button").disabled = pin.length < 6 || device.checking || remainingWait() > 0;
+}
+
+function showWait() {
+  clearInterval(waitTimer);
+  const tick = () => {
+    const s = remainingWait();
+    if (s > 0) {
+      document.getElementById("pin-status").textContent =
+        `Too many wrong PINs. Try again in ${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}.`;
+    } else {
+      clearInterval(waitTimer);
+      document.getElementById("pin-status").textContent = "";
+    }
+    updateUnlockButton();
+  };
+  tick();
+  waitTimer = setInterval(tick, 1000);
+}
+
+function checkPin(pin) {
+  // Counted before the check; any successful unlock resets the count (e7bd418).
+  device.tries += 1;
+  let opened = null;
+  if (pin === PINS.unlock && device.realExists) opened = "main";
+  else if (pin === PINS.duress) opened = "decoy";
+  else if (pin === PINS.panic) {
+    if (device.realExists) {
+      // Silent wipe: the real profile's slot, chats, contacts and wallet are gone.
+      profiles.main = null;
+      device.realExists = false;
+    }
+    opened = "decoy";
+  }
+  if (opened) {
+    device.tries = 0;
+    device.waitUntil = 0;
+    openProfile(opened);
+    return;
+  }
+  document.getElementById("pin-status").textContent = "Wrong PIN.";
+  if (device.tries >= FREE_TRIES) {
+    const wait = Math.min(DEMO_WAIT_MAX, DEMO_WAIT_START * 2 ** (device.tries - FREE_TRIES));
+    device.waitUntil = Date.now() + wait * 1000;
+    showWait();
+  }
+  renderPanel();
+}
+
+document.getElementById("unlock-form").addEventListener("submit", event => {
+  event.preventDefault();
+  const input = document.getElementById("pin");
+  const pin = input.value;
+  if (pin.length < 6 || device.checking || remainingWait() > 0) return;
+  device.checking = true;
+  document.getElementById("pin-status").textContent = "Checking PIN…";
+  updateUnlockButton();
+  // The real check takes about a second, the same for all three PINs.
+  setTimeout(() => {
+    device.checking = false;
+    input.value = "";
+    checkPin(pin);
+    updateUnlockButton();
+  }, 900);
+});
+
+document.getElementById("pin").addEventListener("input", event => {
+  event.target.value = event.target.value.replace(/\D/g, "");
+  updateUnlockButton();
+});
+
+document.getElementById("create-profiles").addEventListener("click", install);
+document.getElementById("skip-setup").addEventListener("click", install);
+document.getElementById("lock-button").addEventListener("click", lock);
+
+document.getElementById("reset-demo").addEventListener("click", () => {
+  clearInterval(waitTimer);
+  profiles = freshProfiles();
+  profile = "main";
+  Object.assign(device, {installed: false, realExists: false, open: null, tries: 0, waitUntil: 0, checking: false});
+  document.getElementById("pin").value = "";
+  document.getElementById("pin-status").textContent = "";
+  renderProfile();
+  showScreen("welcome");
 });
 
 document.getElementById("contact-list").addEventListener("click", event => {
@@ -327,3 +458,4 @@ document.getElementById("message").addEventListener("input", updateByteCount);
 
 renderProfile();
 updateByteCount();
+renderPanel();

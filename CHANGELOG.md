@@ -4,6 +4,28 @@ Every change to this site, newest first. Each entry says what changed, why, and 
 checked against. Earlier versions of changed files are kept in git history and, for local
 reference, in the git-ignored `archive/` folder.
 
+## 2026-11-16: working PINs and a fresh-install reset
+
+Source checked: Zignal `dev` at `e7bd418` (`UnlockView` in `SetupViews.swift`, `AppModel.unlock`,
+the README's "Duress and panic" and wrong-PIN rules).
+
+- **Enter PIN screen** in place of the old "Profile preview": the app's layout and words ("Enter
+  PIN", Unlock, "Checking PIN…", "Wrong PIN.", "Too many wrong PINs. Try again in 0:05.").
+- **The three PINs work, on fictional data in page memory:** `111111` opens the real profile,
+  `222222` the decoy, `333333` erases the real profile and opens the decoy as if nothing
+  happened. Afterwards the unlock PIN is wrong; duress and panic both open the decoy.
+- **Wrong PINs:** 5 free, then a wait before each try, counted before the check and reset by a
+  successful unlock, as at `e7bd418`. The wait is shortened for the demo and labelled (5 seconds
+  doubling to 1 minute; the app uses 30 seconds doubling to 1 hour). Kit 37 will change this
+  rule in the app; the demo follows when it ships.
+- **Demo controls panel** beside the phone (below it on narrow screens): the demo PINs, a
+  warning never to type a real PIN, the simulation state, and "Reset demo (fresh install)".
+- **Removed** the "MAIN PROFILE / DECOY PROFILE" label inside the phone: the app never shows
+  which profile is open. The panel shows it instead, outside the phone. Also removed the panic
+  information screen; its content is now something you can do.
+- "Create profiles" and "Skip to unlocked demo" act as a first install. The demo contact's
+  reply about PINs explains how to try them.
+
 ## 2026-11-16: the real app, screen by screen
 
 Source checked: Zignal `dev` at `e7bd418` (SwiftUI screens, `WalletSupport.swift`, README).
