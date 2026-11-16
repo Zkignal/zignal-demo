@@ -15,8 +15,9 @@ encryption or security runs in the browser.
 
 The site labels every simulated area and never asks for recovery phrases, credentials or
 personal information. The only PINs it takes are three fictional demo PINs printed beside the
-phone; anything else is a wrong PIN, and nothing typed is kept after a reload or sent. It makes no claim that Zignal is unbreakable
-or anonymous. The real app describes itself as experimental and unaudited.
+phone; anything else is a wrong PIN, and nothing typed is kept after a reload or sent. It
+makes no claim that Zignal is unbreakable or anonymous. The real app describes itself as
+experimental and unaudited.
 
 ## Files
 
@@ -67,7 +68,9 @@ repository; 12 to 14 are from the November 15 build. For the web they were only 
 (01 to 03, from 772 to 603 pixels wide) and re-saved without any file metadata (EXIF, XMP,
 colour profile). Nothing in them was painted over or edited. Before publishing, every image was
 checked for QR codes (none; the invite picture is a crop below the code), addresses,
-transaction IDs, recovery words and notifications (none). Two show an older build: the
+transaction IDs, recovery words and notifications (none). The published files were made on
+a Mac directly from the original screenshots, so no tool could add anything on the way, and
+each holds only the PNG chunks IHDR, IDAT and IEND. Two show an older build: the
 network settings list servers that changed on November 15, and the wallet button then read
 "Prepare for chatting" (now "Prepare").
 
@@ -75,10 +78,13 @@ network settings list servers that changed on November 15, and the wallet button
 
 The text on the simulated screens is taken from the app's SwiftUI source on `dev` at
 [`e7bd418`](https://github.com/Zkignal/zignal/tree/e7bd41866dcb35eccb38ac5d49c950add274fe27)
-(`SetupViews`, `ChatViews`, `WalletViews`, `InviteViews`, `RecoveryViews`, `ScreenCapture`)
-and from `WalletSupport.swift` for the default servers. Where the browser can't do what the app
-does (PIN fields, camera, QR codes, real balances, encryption), the screen says so in its own
-words instead of imitating it. See `CHANGELOG.md` for each screen.
+(`SetupViews` including the `UnlockView` lock screen, `ChatViews`, `WalletViews`, `InviteViews`,
+`RecoveryViews`, `ScreenCapture`), from `WalletSupport.swift` for the default servers, and from
+`AppModel.unlock` and the README's "Duress and panic" section for what each PIN does. Where the
+browser can't do what the app does (the PIN fields of setup, camera, QR codes, real balances,
+encryption), the screen says so in its own words instead of imitating it. The wrong-PIN wait
+is the one deliberate difference: shortened and labelled so visitors aren't stuck. See
+`CHANGELOG.md` for each screen.
 
 No third-party packages, analytics, backend or browser storage. Demo data lives in
 page memory and resets on reload. The only outside links go to the Zignal repository
@@ -126,7 +132,9 @@ python3 -m http.server 8765 --bind 127.0.0.1
 Then open `http://127.0.0.1:8765/experience.html` and stop the server with Ctrl+C.
 Choose **Skip to unlocked demo**, open **Demo contact**, and try "Hello",
 "What is Prepare?" or "How does Tor work?". For a second conversation, choose
-**New chat > Scan or paste an invite > Use sample invite**. Reload to reset everything.
+**New chat > Scan or paste an invite > Use sample invite**. To see the panic PIN, lock
+(top left), enter `333333`, then lock again and enter `111111`. **Reset demo (fresh install)**
+or a reload resets everything.
 
 ## Scope
 
@@ -134,8 +142,19 @@ This is not a port, protocol implementation or security test of Zignal. It does 
 
 - connect to Zcash, a blockchain, lightwalletd, a VPN, Tor or any other server;
 - generate or encrypt messages, use cryptographic primitives or create keys;
-- create a wallet, account, profile, PIN, invite, safety number or recovery phrase;
+- create a real wallet, account, invite, safety number or recovery phrase (the two profiles
+  and the demo PINs are fictional and exist only in page memory);
 - send or receive payments, funds, messages or network requests;
 - provide real duress, panic-wipe, privacy, anonymity or security protections.
 
 Never use the preview with real funds or secrets.
+
+## Maintaining this site
+
+- **No metadata, ever,** in any published file. Images keep only the PNG chunks IHDR, IDAT
+  and IEND, and are made from the original screenshots on the machine that commits them.
+- Any change to `experience.js` or `experience.css` also changes their `?v=` tag in
+  `experience.html`, or returning visitors keep the old file for a while.
+- Every change gets a `CHANGELOG.md` entry saying what changed, why, and which Zignal commit
+  it was checked against. When the app's text or behaviour changes, the demo follows and the
+  pinned commit moves forward.

@@ -4,7 +4,14 @@ Every change to this site, newest first. Each entry says what changed, why, and 
 checked against. Earlier versions of changed files are kept in git history and, for local
 reference, in the git-ignored `archive/` folder.
 
-## 2026-11-16: working PINs and a fresh-install reset
+## 2026-11-16: documentation
+
+- README: the screenshots' no-metadata check and how the files were made, the sources the PIN
+  behaviour follows, how to try the panic PIN, the scope wording for the fictional profiles,
+  and a new "Maintaining this site" section (no metadata, cache tags, changelog).
+- This changelog: commit hashes on each entry.
+
+## 2026-11-16: working PINs and a fresh-install reset (`5351de7`, `4680ddc`)
 
 Source checked: Zignal `dev` at `e7bd418` (`UnlockView` in `SetupViews.swift`, `AppModel.unlock`,
 the README's "Duress and panic" and wrong-PIN rules).
@@ -23,13 +30,13 @@ the README's "Duress and panic" and wrong-PIN rules).
 - **Removed** the "MAIN PROFILE / DECOY PROFILE" label inside the phone: the app never shows
   which profile is open. The panel shows it instead, outside the phone. Also removed the panic
   information screen; its content is now something you can do.
-- Cache tags on the CSS and JS moved to `2026-11-16-pins` (follow-up commit): the first push
+- Cache tags on the CSS and JS moved to `2026-11-16-pins` (`4680ddc`): the first push
   kept the earlier tag, so a browser that had visited before could keep the old script for up to
   10 minutes and the new buttons did nothing.
 - "Create profiles" and "Skip to unlocked demo" act as a first install. The demo contact's
   reply about PINs explains how to try them.
 
-## 2026-11-16: the real app, screen by screen
+## 2026-11-16: the real app, screen by screen (`6c326ce`)
 
 Source checked: Zignal `dev` at `e7bd418` (SwiftUI screens, `WalletSupport.swift`, README).
 
