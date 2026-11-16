@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08090c">
+  <meta name="description" content="A simulated, interactive preview of the Zignal iOS app.">
+  <title>Zignal — iOS demo</title>
+  <link rel="stylesheet" href="experience.css?v=e7bd418">
+  <script src="experience.js?v=e7bd418" defer></script>
+</head>
+<body>
+  <div class="notice"><span class="notice-dot"></span><strong>SIMULATION</strong><span>Not the real app. Do not enter real PINs, recovery phrases, or personal information.</span></div>
+  <header class="site-header">
+    <div class="wordmark"><span class="logo">Z</span><span>Zignal <small>iOS DEMO</small></span></div>
+    <nav class="site-nav" aria-label="Learn about Zignal"><a href="#technology">How it works</a><a href="#privacy">Privacy</a><a href="#roadmap">Roadmap</a></nav>
+  </header>
+  <main>
+    <section class="intro">
+      <div class="intro-copy">
+        <div class="eyebrow"><span></span> INTERACTIVE PRODUCT PREVIEW</div>
+        <h1>Private messaging,<br><em>reimagined.</em></h1>
+        <p>Zignal’s real iOS app carries end-to-end encrypted messages in shielded Zcash transactions. Explore the experience below, then see how its privacy design works.</p>
+        <div class="intro-note"><span>ⓘ</span><div><strong>Everything on the phone is simulated.</strong><br>No account, network, wallet, encryption, or protective features are created here.</div></div>
+        <p class="tech-source">Updated from the Zignal repository’s <code>dev</code> branch at <a href="https://github.com/Zkignal/zignal/tree/e7bd41866dcb35eccb38ac5d49c950add274fe27" target="_blank" rel="noopener noreferrer">e7bd418 ↗</a>. TestFlight is not public yet. This preview illustrates documented changes; it does not verify the real app’s fixes.</p>
+        <div class="instruction"><span class="instruction-number">01</span><span>Use the phone to explore<br><strong>Tap “Get started” to begin</strong></span><span class="arrow">↗</span></div>
+      </div>
+      <div class="phone-column">
+        <div class="phone" aria-label="Interactive Zignal iOS simulation">
+          <div class="phone-top"><span>9:41</span><span class="island"></span><span class="status-icons">▮▮▮ ◉ ▰</span></div>
+          <div class="phone-body">
+            <section class="screen welcome active" id="welcome" aria-label="Welcome">
+              <div class="welcome-content">
+                <svg class="shield" viewBox="0 0 64 72" fill="none" aria-hidden="true"><path d="M32 4 55 13v19c0 16-10 27-23 34C19 59 9 48 9 32V13L32 4Z" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><rect x="22" y="30" width="20" height="17" rx="3" fill="currentColor"/><path d="M26 30v-6a6 6 0 0 1 12 0v6" stroke="currentColor" stroke-width="4"/></svg>
+                <h2>Zignal</h2>
+                <ul class="features">
+                  <li><span>▢</span>Messages travel inside shielded Zcash transactions.</li>
+                  <li><span>◎</span>No phone number, no account, no Zignal server.</li>
+                  <li><span>♧</span>Post-quantum handshake and forward secrecy.</li>
+                  <li><span>◉</span>A duress PIN opens a decoy; a panic PIN erases the real profile on the phone.</li>
+                </ul>
+              </div>
+              <div class="welcome-actions"><button class="big-blue" data-screen="setup">Get started</button><button class="demo-action" data-screen="chats">Skip to unlocked demo</button><button class="plain" data-screen="recovery">Restore from recovery phrase</button><p>Real app: experimental and not audited.<br>Browser preview: simulation only.</p></div>
+            </section>
+            <section class="screen grouped" id="setup" aria-label="Set PINs">
+              <div class="nav"><button class="back" data-screen="welcome" aria-label="Back to welcome">‹</button><strong>Set PINs</strong><span></span></div>
+              <div class="scroll"><div class="section-label">YOU'LL SET 3 DIFFERENT PINS</div>
+                <div class="group roles"><div><b>1</b><span><strong>Unlock PIN:</strong> opens the real profile.</span></div><div><b>2</b><span><strong>Duress PIN:</strong> opens a decoy profile.</span></div><div><b>3</b><span><strong>Panic PIN:</strong> erases the real profile from the phone, then opens the decoy.</span></div></div>
+                <p class="section-foot">In the real app, these are separate PINs. This demo never asks for or creates PINs.</p>
+                <div class="section-label">RECOVERY PHRASE</div><div class="group text-group">Each profile has its own recovery phrase. A phrase can restore the wallet, but not chat history.</div>
+                <p class="section-foot">Never type a recovery phrase into this demo.</p>
+                <button class="big-blue" data-screen="chats">Continue to demo chats</button><p class="center-foot">No profiles or wallets are created.</p>
+              </div>
+            </section>
+            <section class="screen grouped" id="recovery" aria-label="Recovery phrase">
+              <div class="nav"><button class="back" data-screen="welcome" aria-label="Back to welcome">‹</button><strong>Recovery phrase</strong><span></span></div>
+              <div class="scroll"><div class="section-label">RECOVERY PHRASE</div><div class="group text-group">This preview cannot restore a wallet. Never enter or share a real recovery phrase here.</div><p class="section-foot">The real app uses 24 words for each profile. Wallet funds can be restored with the phrase; chat history cannot.</p><button class="big-blue" data-screen="setup">Explore setup instead</button></div>
+            </section>
+            <section class="screen chats" id="chats" aria-label="Chats">
+              <div class="toolbar"><button class="circle" data-screen="lock" aria-label="Lock and preview profiles"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="10" width="12" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></button><div class="toolbar-group"><button class="circle" data-screen="recovery-info" aria-label="Recovery phrase information"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M10 11v9h4v-3h-2v-3h2v-3"/></svg></button><button class="circle" data-screen="new-chat" aria-label="New chat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5H5v15h15v-8M12 12 21 3m-6 0h6v6"/></svg></button></div></div>
+              <div class="scroll"><h2 class="large-title">Chats</h2><div class="profile-caption" id="profile-caption">MAIN PROFILE · SIMULATED</div>
+                <button class="recovery-banner" data-screen="recovery-info"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M10 11v9h4v-3h-2v-3h2v-3"/></svg>Back up your recovery phrase</button><p class="section-foot recovery-note">Preview only. No recovery phrase exists here.</p><div class="section-label">WALLET</div>
+                <div class="group wallet"><div class="wallet-status"><span>◉ &nbsp; Up to date</span><span><strong id="wallet-balance">0.01200000 DEMO</strong><small>Fictional balance</small></span></div><div class="wallet-buttons"><button data-screen="funds">▦ &nbsp; Add funds</button><button id="prepare-button">⊞ &nbsp; <span>Prepare</span></button><button data-screen="network" aria-label="Network settings">◎</button></div><div class="wallet-ready" id="wallet-ready" role="status">Simulation: Prepare splits only when helpful.</div><button class="demo-action" id="confirm-prepare" hidden>Simulate confirmations</button></div>
+                <p class="section-foot">In the real app, messages are shielded Zcash transactions and have a network fee. “Prepare” helps several messages go out in a row.</p>
+                <div class="group contact-group" id="contact-list" aria-label="Fictional contacts"></div>
+                <p class="section-foot">Fictional contacts reply with local scripts, not AI. No messages leave this page or get encrypted.</p>
+                <div class="group choices"><button data-screen="send-recovery"><strong>Explore interrupted sends</strong><span>Walk through the documented dev fix</span>›</button></div>
+              </div>
+            </section>
+            <section class="screen conversation" id="conversation" aria-label="Demo conversation">
+              <div class="nav"><button class="back" data-screen="chats" aria-label="Back to chats">‹</button><strong id="conversation-title">Demo contact</strong><button class="circle info" data-screen="contact-info" aria-label="Contact information">ⓘ</button></div>
+              <div class="conversation-note">Local scripted replies · No AI or encryption</div>
+              <div class="chat-scroll" id="messages" role="log" aria-label="Simulated conversation" aria-live="polite" aria-relevant="additions"></div>
+              <form id="message-form" class="composer"><label class="sr-only" for="message">Demo message</label><input id="message" maxlength="280" placeholder="Message the demo contact" autocomplete="off" autocapitalize="sentences" spellcheck="false"><button type="submit" aria-label="Add demo message">↑</button></form><div class="input-warning">Demo only · Never enter personal information or secrets.</div>
+            </section>
+            <section class="screen grouped" id="lock" aria-label="Profile preview">
+              <div class="nav"><button class="back" data-screen="chats" aria-label="Back to chats">‹</button><strong>Profile preview</strong><span></span></div>
+              <div class="scroll"><div class="section-label">SIMULATE AN UNLOCK</div><div class="group choices"><button data-profile="main"><strong>Unlock</strong><span>Open the fictional main profile</span>›</button><button data-profile="decoy"><strong>Duress</strong><span>Open a fictional decoy profile</span>›</button><button data-screen="panic"><strong>Panic</strong><span>Learn what the real app intends to do</span>›</button></div><p class="section-foot">No PIN is entered or checked. These are sample screens, not protection against coercion.</p></div>
+            </section>
+            <section class="screen grouped" id="send-recovery" aria-label="Interrupted-send simulation">
+              <div class="nav"><button class="back" data-screen="chats" aria-label="Back to chats">‹</button><strong>Send recovery</strong><span></span></div>
+              <div class="scroll"><div class="section-label">SCRIPTED SIMULATION · NOT A REAL SEND</div><div class="group text-group">Explore how the real app handles a send interrupted by locking. “Delivered” means included in a block, not read by the contact.</div>
+                <div class="group text-group send-example"><strong>Fictional message</strong><p id="send-status" role="status"></p><small id="send-detail"></small></div>
+                <button class="big-blue" id="send-step">Simulate sending</button><button class="demo-action" id="send-missing" hidden>Simulate send needs retry</button><button class="demo-action" id="send-restart">Restart walkthrough</button>
+                <p class="section-foot">No transaction is built, checked, or broadcast. Retry illustrates reuse of a transaction still held by the wallet; if it is unavailable or expired, the real app may need to build another.</p>
+              </div>
+            </section>
+            <section class="screen grouped" id="panic" aria-label="Panic PIN information">
+              <div class="nav"><button class="back" data-screen="lock" aria-label="Back to profile preview">‹</button><strong>Panic PIN</strong><span></span></div>
+              <div class="scroll"><div class="section-label">REAL APP CONCEPT</div><div class="group text-group">The real app describes a panic PIN that erases the real profile on the phone and opens the decoy. This cannot be undone. Wallet funds require the recovery phrase; erased chats cannot be recovered.</div><p class="section-foot">Dev moves cleanup after the decoy appears and resumes interrupted cleanup on a later decoy unlock. The source still lists wipe traces as a limitation, not a solved forensic problem.</p><p class="section-foot">This browser demo deletes nothing. A real wipe does not erase server records, blockchain transactions, or contacts' copies.</p><button class="big-blue" data-profile="decoy">Preview decoy (no deletion)</button></div>
+            </section>
+            <section class="screen grouped" id="funds" aria-label="Add funds information">
+              <div class="nav"><button class="back" data-screen="chats" aria-label="Back to chats">‹</button><strong>Add funds</strong><span></span></div><div class="scroll"><div class="section-label">SIMULATION ONLY</div><div class="group text-group">The real iOS app can show a shielded address for funding. Received ZEC becomes spendable after 10 confirmations, about 4 minutes after NU7; timing varies. This preview has no address, QR code, real wallet, or funds.</div><p class="section-foot">Do not send money to anything described in this demo.</p><button class="big-blue" data-screen="chats">Done</button></div>
+            </section>
+            <section class="screen grouped" id="network" aria-label="Network settings">
+              <div class="nav"><button class="back" data-screen="chats" aria-label="Back to chats">‹</button><strong>Network</strong><span></span></div><div class="scroll"><div class="group toggle-row"><span>Use Tor <small>Illustration only</small></span><button id="tor-toggle" class="toggle" role="switch" aria-checked="false" aria-label="Simulated Use Tor"><span></span></button></div><p class="section-foot">In the real app, Tor is off by default. When enabled, sending and fetching go over Tor; syncing (block downloads, tree states and subtree roots) still connects directly. This switch changes no network settings.</p><div class="section-label">DEV NETWORK CHANGE</div><div class="group text-group">The patched wallet no longer queries transparent addresses during sync. This removes that repeated wallet identifier, not all network metadata. No server is configured or contacted here.</div><button class="big-blue" data-screen="chats">Done</button></div>
+            </section>
+            <section class="screen grouped" id="recovery-info" aria-label="Recovery information">
+              <div class="nav"><button class="back" data-screen="chats" aria-label="Back to chats">‹</button><strong>Recovery phrase</strong><span></span></div><div class="scroll"><div class="group text-group">No recovery phrase exists in this simulation. Never enter or share real recovery words here.</div><p class="section-foot">Dev hides recovery words until capture status is known, and while recording, mirroring, or sharing. iOS cannot block screenshots; the app warns after one.</p>
+                <div class="group text-group" id="capture-status" role="status">Placeholder only. No recovery words are generated.</div><button class="demo-action" id="capture-toggle" aria-pressed="false">Simulate screen recording</button><button class="demo-action" id="capture-screenshot">Simulate screenshot warning</button><p class="section-foot" id="capture-warning" role="status" hidden>Simulated warning: a real screenshot could expose recovery words. The real app asks you to delete it. This preview has no words and detects no captures.</p><p class="section-foot">These buttons illustrate states only. This page cannot detect or prevent recording, sharing, or screenshots.</p></div>
+            </section>
+            <section class="screen grouped" id="new-chat" aria-label="New chat">
+              <div class="nav"><button class="back" data-screen="chats" aria-label="Back to chats">‹</button><strong>New chat</strong><span></span></div><div class="scroll"><div class="group choices"><button data-screen="invite"><strong>Show my invite</strong><span>View a non-scannable illustration</span>›</button><button data-screen="add-contact"><strong>Scan or paste an invite</strong><span>Preview with a fictional sample instead</span>›</button><button id="start-demo-chat"><strong>Start demo chat</strong><span>Get a local, scripted reply</span>›</button></div><p class="section-foot">No camera, clipboard, or real invites are accessed.</p></div>
+            </section>
+            <section class="screen grouped" id="invite" aria-label="Invite information">
+              <div class="nav"><button class="back" data-screen="new-chat" aria-label="Back to new chat">‹</button><strong>Your invite</strong><span></span></div><div class="scroll">
+                <div class="invite-preview"><svg class="invite-art" viewBox="0 0 25 25" role="img" aria-label="Non-scannable QR-style illustration. No encoded data."><defs><pattern id="demo-tiles" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 0h1v2H0zM2 0h2v1H2zM1 2h2v1H1zM3 3h1v1H3z" fill="#111"/></pattern></defs><rect width="25" height="25" rx="1" fill="#fff"/><rect x="2" y="2" width="21" height="21" fill="url(#demo-tiles)"/><path d="M2 8V2h6m9 0h6v6M2 17v6h6" fill="none" stroke="#111" stroke-width=".8"/><rect x="1" y="9" width="23" height="7" fill="#fff"/><text x="12.5" y="13.8" text-anchor="middle" fill="#111" font-family="sans-serif" font-size="4" font-weight="700">DEMO</text></svg><strong>Illustration only · Not scannable</strong></div>
+                <p class="section-foot">In the real app, only one person scans the other's single-use invite. This pattern encodes no address, key, or invite.</p><button class="big-blue" data-screen="add-contact">Try a fictional sample invite</button></div>
+            </section>
+            <section class="screen grouped" id="add-contact" aria-label="Sample contact invite">
+              <div class="nav"><button class="back" data-screen="new-chat" aria-label="Back to new chat">‹</button><strong>Add contact</strong><span></span></div><div class="scroll"><div class="group text-group"><strong>Fictional sample invite</strong><p>New contact</p><code>DEMO-ONLY · NOT A REAL INVITE</code></div><p class="section-foot">The real app accepts a scanned or pasted invite. Here, use a built-in sample to open another local conversation. Never paste a real invite or wallet address into this preview.</p><button class="big-blue" id="add-sample-contact">Use sample invite</button><p class="section-foot">Reusing the sample reopens the same fictional contact without duplicating or resetting the conversation.</p></div>
+            </section>
+            <section class="screen grouped" id="contact-info" aria-label="Contact information">
+              <div class="nav"><button class="back" data-screen="conversation" aria-label="Back to conversation">‹</button><strong>Contact</strong><span></span></div><div class="scroll"><div class="section-label">NAME</div><div class="group text-group"><strong id="contact-name">Demo contact</strong><br>Fictional contact · Simulation only</div><div class="section-label">SAFETY NUMBER</div><div class="group"><div class="safety-placeholder">DEMO ONLY<br>NO SAFETY NUMBER</div><div class="toggle-row"><span>Verified <small>Visual demo mark only</small></span><button id="contact-verified" class="toggle" role="switch" aria-checked="false" aria-label="Mark fictional contact as verified in simulation"><span></span></button></div></div><p class="section-foot">The real app compares 60-digit safety numbers. This preview generates no number and verifies no identity. The switch only changes a local demo mark.</p></div>
+            </section>
+          </div>
+          <div class="home-bar"></div>
+        </div>
+        <div class="phone-caption"><span class="notice-dot"></span> INTERACTIVE SIMULATION <span>·</span> NO REAL ACTIONS</div>
+      </div>
+    </section>
+    <section class="technology" id="dev-updates" aria-labelledby="dev-title">
+      <div class="technology-heading"><h2 id="dev-title">The latest dev,<br><em>in simulation.</em></h2><p>The phone illustrates documented fixes using fictional data. Source inspection is not an independent security audit or an iPhone test.</p></div>
+      <div class="message-path">
+        <article><h3>Recover an interrupted send</h3><p>Try Chats → Explore interrupted sends. Step through checking, sent, and delivered, or retry a failed send using the same fictional transaction. Real delivery means inclusion in a block, not a read receipt.</p></article>
+        <article><h3>Prepare only when helpful</h3><p>Try Prepare → Simulate confirmations. The button waits in Confirming, then becomes Ready instead of offering another split. Real confirmation time is not simulated elapsed time.</p></article>
+        <article><h3>Understand device changes</h3><p>Explore recovery capture states and the panic-PIN explanation. Dev also documents Secure Enclave sealing, interrupted-wipe cleanup, and a stopped wallet staying stopped after a server change. None of those protections run here.</p></article>
+        <article><h3>Latest: invites, restores and release readiness</h3><p>Revision e7bd418 refuses an invite that was used before, asks before a contact’s new invite starts a chat over, and treats the panic PIN as wrong on the recovery phrase screen. Revision 5e795ee adds a recent checkpoint and default servers from three operators. Revision f8b3881 keeps build-machine paths out of the Rust core and adds a privacy manifest declaring no tracking or collected data. These are source changes and declarations, not proof of privacy or App Store approval. TestFlight is not public yet.</p></article>
+      </div>
+      <p class="tech-source">Read the repository’s <a href="https://github.com/Zkignal/zignal/blob/e7bd41866dcb35eccb38ac5d49c950add274fe27/README.md#this-branch-dev" target="_blank" rel="noopener noreferrer">dev changes ↗</a> and <a href="https://github.com/Zkignal/zignal/commit/e7bd41866dcb35eccb38ac5d49c950add274fe27" target="_blank" rel="noopener noreferrer">latest source commit ↗</a>. The real app remains experimental and unaudited.</p>
+    </section>
+    <section class="technology" id="technology" aria-labelledby="technology-title">
+      <div class="eyebrow"><span></span> THE TECHNOLOGY BEHIND THE REAL APP</div>
+      <div class="technology-heading">
+        <h2 id="technology-title">A message has<br><em>more than one layer.</em></h2>
+        <p>In the real iOS app, a message is encrypted by Zignal and carried inside a shielded Zcash transaction. The browser phone above is only a simulation: it does neither.</p>
+      </div>
+      <div class="message-path" aria-label="How the real app sends a message">
+        <article><span class="path-number">01</span><h3>Connect a contact</h3><p>Two people use a single-use invite. Each contact gets a fresh shielded receive address, and they can compare safety numbers to verify the connection.</p></article>
+        <article><span class="path-number">02</span><h3>Establish keys</h3><p>A PQXDH-style hybrid handshake combines X25519, a classical key exchange, with ML-KEM-768, a post-quantum key encapsulation mechanism.</p></article>
+        <article><span class="path-number">03</span><h3>Encrypt the conversation</h3><p>Zignal adds an end-to-end encryption layer over Zcash’s memo encryption. After the first reply, its Double Ratchet updates message keys and encrypts headers.</p></article>
+        <article><span class="path-number">04</span><h3>Carry it on Zcash</h3><p>Each real message is sent as one shielded transaction. Longer messages can span multiple encrypted memos in that transaction. The sender pays a network fee.</p></article>
+      </div>
+      <div class="tech-callout"><span class="tech-callout-icon">↗</span><div><strong>Why the extra layer?</strong><p>According to the project’s documentation, a wallet viewing key can reveal ordinary Zcash memos, but Zignal’s additional end-to-end layer leaves its message content as ciphertext to someone with only that key.</p></div></div>
+      <div class="quantum-note"><strong>Post-quantum, precisely:</strong> The hybrid protection is in the initial handshake. The project lists post-quantum protection for every message as future work. The first message’s forward secrecy relies on weekly signed-prekey rotation; there are no one-time prekeys yet.</div>
+      <div class="difference-heading"><div class="eyebrow"><span></span> WHAT MAKES IT DIFFERENT</div><h3>Built for a conversation,<br>not just a payment memo.</h3><p>A comparison with an ordinary Zcash wallet memo—not a claim about every messaging or wallet app.</p></div>
+      <div class="messenger-note"><strong>Compared with messaging apps:</strong> End-to-end encryption is not unique to Zignal. Its distinctive combination is an additional messaging protocol carried by shielded Zcash transactions, without a Zignal-operated messaging server or phone-number account. The tradeoffs include transaction fees, sync time, and network metadata that can still be visible to the chosen server.</div>
+      <div class="comparison" role="table" aria-label="Ordinary Zcash wallet memo compared with Zignal">
+        <div class="comparison-row comparison-head" role="row"><div role="columnheader">FEATURE</div><div role="columnheader">ORDINARY WALLET MEMO</div><div role="columnheader">ZIGNAL’S REAL APP</div></div>
+        <div class="comparison-row" role="row"><div role="rowheader">Message privacy</div><div role="cell">Memo encryption; a recipient’s viewing key can read memos.</div><div role="cell">An additional end-to-end layer; a viewing key alone reveals ciphertext.</div></div>
+        <div class="comparison-row" role="row"><div role="rowheader">Key establishment</div><div role="cell">Zcash’s note encryption uses classical cryptography.</div><div role="cell">A hybrid X25519 + ML-KEM-768 handshake, followed by a Double Ratchet.</div></div>
+        <div class="comparison-row" role="row"><div role="rowheader">Contacts</div><div role="cell">A memo is typically attached to a payment.</div><div role="cell">Contact-specific addresses, single-use invites, and safety-number verification.</div></div>
+        <div class="comparison-row" role="row"><div role="rowheader">Experience</div><div role="cell">Wallet-first, with memos shown alongside transactions.</div><div role="cell">Chat-first, with delivery status; ZEC is used to pay network fees.</div></div>
+      </div>
+      <p class="tech-source">Based on the repository’s <code>dev</code> documentation, revision <a href="https://github.com/Zkignal/zignal/blob/e7bd41866dcb35eccb38ac5d49c950add274fe27/README.md#protocol-at-a-glance" target="_blank" rel="noopener noreferrer">e7bd418: protocol at a glance ↗</a>.</p>
+    </section>
+    <section class="privacy" id="privacy">
+      <div class="eyebrow"><span></span> HOW THE REAL APP IS DESIGNED</div>
+      <div class="privacy-heading"><h2>Privacy, with<br><em>the full picture.</em></h2><p>These descriptions refer to the real iOS app’s <code>dev</code> branch, not this browser preview. Zignal is experimental and has not been audited.</p></div>
+      <div class="privacy-grid">
+        <article><span>01 / MESSAGING</span><h3>Messages inside Zcash</h3><p>The app carries messages in shielded Zcash transactions. It adds a post-quantum hybrid handshake and a Double Ratchet on top of Zcash memo encryption. Messages have network fees and are not instant.</p></article>
+        <article><span>02 / IDENTITY</span><h3>No phone number or account</h3><p>Zignal describes no Zignal server, account, or phone number. Contacts use a single-use invite and can compare safety numbers. Messages arrive while the app is open and synced; there are no push notifications.</p></article>
+        <article><span>03 / DEVICE</span><h3>Two profiles, three PINs</h3><p>The real app describes an unlock PIN, a duress PIN for a decoy, and a panic PIN that erases the real profile on the phone. The PIN vault is sealed by the iPhone’s Secure Enclave. A wipe cannot be undone, can leave traces, and does not remove other copies.</p></article>
+        <article><span>04 / NETWORK</span><h3>Know the limits</h3><p>Dev no longer queries transparent addresses during sync. With Tor off, the server still sees your IP and transaction activity. Tor covers sending and fetching; syncing still connects directly. Privacy is not a guarantee.</p></article>
+      </div>
+      <div class="source-note"><span>ⓘ</span><p>The repository documents additional limitations, including device forensics, recovery, panic PIN traces, and network privacy. <a href="https://github.com/Zkignal/zignal/blob/e7bd41866dcb35eccb38ac5d49c950add274fe27/README.md#security-notes-and-known-limitations" target="_blank" rel="noopener noreferrer">Read the real app’s security notes ↗</a></p></div>
+    </section>
+    <section class="network-section" id="network-privacy" aria-labelledby="network-title">
+      <div class="eyebrow"><span></span> PRIVACY BEYOND THE BLOCKCHAIN</div>
+      <div class="technology-heading"><h2 id="network-title">Choose who sees<br><em>your connection.</em></h2><p>Shielded transactions and encrypted messages do not automatically hide your IP address or connection timing. The real app lets you choose a lightwalletd server and optionally use Tor.</p></div>
+      <div class="network-grid">
+        <article class="network-card"><span class="network-icon">⌘</span><div class="card-kicker">01 / YOUR OWN NODE</div><h3>Run your own server.</h3><p>Instead of a public lightwalletd provider, run a compatible Zcash node with lightwalletd and point the real app’s Network settings at your server. Your wallet requests go to infrastructure you control, rather than a public lightwalletd operator.</p><p class="network-caveat">Self-hosting shifts responsibility for the server’s security and operation to you. Hosting providers, network observers, and node peers may still see connection metadata; it is not anonymity by itself.</p><a href="https://github.com/zcash/lightwalletd#localdeveloper-usage" target="_blank" rel="noopener noreferrer">About running lightwalletd ↗</a></article>
+        <article class="network-card"><span class="network-icon">◇</span><div class="card-kicker">02 / VPN + TOR</div><h3>Layer your connection.</h3><p>With Tor enabled in the real app, sends and transaction fetches use Tor; syncing (block downloads, tree states and subtree roots) still connects directly. A VPN can put those connections behind the VPN’s IP address; a kill switch can block traffic if the VPN disconnects.</p><p class="network-caveat">A VPN shifts trust to its provider, which can see your IP and connection metadata. Choose carefully: a no-logs claim is not proof. VPNs do not change on-chain data or protect an unlocked device.</p></article>
+      </div>
+      <div class="network-path"><div><span>YOUR IPHONE</span><strong>Real Zignal app</strong></div><b aria-hidden="true">→</b><div><span>OPTIONAL</span><strong>VPN + Tor*</strong></div><b aria-hidden="true">→</b><div><span>YOUR CHOICE</span><strong>Public or own server</strong></div><b aria-hidden="true">→</b><div><span>TRANSPORT</span><strong>Zcash network</strong></div></div>
+      <p class="network-foot">* Tor covers sends and fetches in the current real app; syncing (block downloads, tree states and subtree roots) still connects directly. With a home server, a VPN kill switch that blocks local network access may prevent the app from reaching it; local access or a suitable VPN route may be needed. This demo makes none of these connections.</p>
+      <p class="tech-source">Based on the repository’s <code>dev</code> documentation, revision <a href="https://github.com/Zkignal/zignal/blob/e7bd41866dcb35eccb38ac5d49c950add274fe27/README.md#network-privacy-tor-a-vpn-or-your-own-server" target="_blank" rel="noopener noreferrer">e7bd418: network privacy ↗</a>.</p>
+    </section>
+    <section class="roadmap" id="roadmap" aria-labelledby="roadmap-title">
+      <div class="eyebrow"><span></span> FROM THE REAL PROJECT’S DEV ROADMAP</div>
+      <div class="technology-heading"><h2 id="roadmap-title">What’s being<br><em>explored next.</em></h2><p>Ideas and planned work, not features of this demo or promises of release. Priorities and timing may change; there are no dates in the source roadmap.</p></div>
+      <div class="roadmap-grid">
+        <article><span>01 / MESSAGE PRIVACY</span><h3>Hide more about message length</h3><p>Explore padding messages to fixed memo counts, so fees reveal less about their length. Today, fees can indicate roughly how many memos were used.</p></article>
+        <article><span>02 / CRYPTOGRAPHY</span><h3>Further post-quantum work</h3><p>Post-quantum protection for every message is listed as later work. Today the hybrid post-quantum component is in the initial handshake.</p></article>
+        <article><span>03 / CONTACTS</span><h3>Safer first conversations</h3><p>Plan one-time prekeys, contact-reset notices, and revocation of unused invites. A contact-requests inbox with accept and block is also proposed.</p></article>
+        <article><span>04 / WALLET</span><h3>More wallet interoperability</h3><p>Proposals include showing memos from other wallets, sending plain memos to shielded wallets, and wallet import—with a warning that history can link messaging addresses.</p></article>
+        <article><span>05 / NETWORK</span><h3>Sync and network improvements</h3><p>More checkpoints so restores with an earlier date don’t scan from June (new wallets already start near the chain tip), a newer Tor library when compatible, and asking whether ZODL’s Oblivious HTTP relay can be used or licensed.</p></article>
+        <article><span>06 / AVAILABILITY</span><h3>More ways to try Zignal</h3><p>TestFlight is not public yet: the roadmap says private testing first, then a public link. For now, the source describes building with Xcode. Android and a prebuilt SDK library remain planned.</p></article>
+      </div>
+      <div class="roadmap-status"><span>ALREADY ON DEV</span><p>NU7 compatibility is listed as done on <code>dev</code> and <code>nu7</code>, not as a future feature. The real app remains experimental and unaudited.</p></div>
+      <p class="tech-source">Summarized from <a href="https://github.com/Zkignal/zignal/blob/e7bd41866dcb35eccb38ac5d49c950add274fe27/README.md#roadmap-after-the-zecathon" target="_blank" rel="noopener noreferrer">the repository’s <code>dev</code> roadmap at revision e7bd418 ↗</a>. See the latest project documentation for changes.</p>
+    </section>
+  </main>
+  <footer><span>ZIGNAL / BROWSER SIMULATION</span><span>Not affiliated with a live wallet or messaging service.</span></footer>
+</body>
+</html>
