@@ -25,6 +25,8 @@ or anonymous. The real app describes itself as experimental and unaudited.
 | `experience.html` | Interactive phone preview, plus the technology, privacy, network and roadmap explanations. |
 | `experience.css` | Phone UI, page styling and responsive layouts. |
 | `experience.js` | Local screen navigation, sample messages, fictional profiles and illustrative controls. |
+| `img/` | 14 real screenshots of the Zignal app (see "Screenshots" below). |
+| `CHANGELOG.md` | Every change to this site: what, why, and the source it was checked against. |
 
 ## What you can try
 
@@ -45,6 +47,27 @@ or anonymous. The real app describes itself as experimental and unaudited.
 - **Recovery:** recording-hidden and screenshot-warning states with placeholder text.
   No words are generated; no capture is detected or blocked.
 - **Network:** an illustrative Tor switch. It configures no VPN, Tor, server or connection.
+
+## Screenshots
+
+The "real app" section shows 14 unedited screenshots of the Zignal app, each captioned with
+the build it comes from. Images 01 to 11 are the same files as `pics/` in the Zignal
+repository; 12 to 14 are from the November 15 build. For the web they were only resized
+(01 to 03, from 772 to 603 pixels wide) and re-saved without any file metadata (EXIF, XMP,
+colour profile). Nothing in them was painted over or edited. Before publishing, every image was
+checked for QR codes (none; the invite picture is a crop below the code), addresses,
+transaction IDs, recovery words and notifications (none). Two show an older build: the
+network settings list servers that changed on November 15, and the wallet button then read
+"Prepare for chatting" (now "Prepare").
+
+## How the phone simulation follows the app
+
+The text on the simulated screens is taken from the app's SwiftUI source on `dev` at
+[`e7bd418`](https://github.com/Zkignal/zignal/tree/e7bd41866dcb35eccb38ac5d49c950add274fe27)
+(`SetupViews`, `ChatViews`, `WalletViews`, `InviteViews`, `RecoveryViews`, `ScreenCapture`)
+and from `WalletSupport.swift` for the default servers. Where the browser can't do what the app
+does (PIN fields, camera, QR codes, real balances, encryption), the screen says so in its own
+words instead of imitating it. See `CHANGELOG.md` for each screen.
 
 No third-party packages, analytics, backend or browser storage. Demo data lives in
 page memory and resets on reload. The only outside links go to the Zignal repository

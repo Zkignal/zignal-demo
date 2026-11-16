@@ -110,6 +110,7 @@ function openConversation(id) {
   if (!Object.hasOwn(profiles[profile].contacts, id)) return;
   profiles[profile].selectedContact = id;
   document.getElementById("message").value = "";
+  updateByteCount();
   renderMessages();
   showScreen("conversation");
 }
@@ -148,6 +149,7 @@ function renderProfile() {
   renderSendRecovery();
   renderCapture();
   document.getElementById("message").value = "";
+  updateByteCount();
   document.getElementById("tor-toggle").setAttribute("aria-checked", String(current.tor));
   renderMessages();
 }
@@ -309,10 +311,19 @@ document.getElementById("message-form").addEventListener("submit", event => {
   ];
   contact.messages.push(...exchange);
   input.value = "";
+  updateByteCount();
   const messages = document.getElementById("messages");
   messages.append(...exchange.map(createMessageEntry));
   messages.scrollTop = messages.scrollHeight;
   renderContacts();
 });
 
+function updateByteCount() {
+  const bytes = new TextEncoder().encode(document.getElementById("message").value).length;
+  document.getElementById("byte-count").textContent = `${bytes} / 4000`;
+}
+
+document.getElementById("message").addEventListener("input", updateByteCount);
+
 renderProfile();
+updateByteCount();
