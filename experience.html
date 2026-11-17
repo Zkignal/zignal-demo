@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#08090c">
   <meta name="description" content="A simulated, interactive preview of the Zignal iOS app.">
   <title>Zignal — iOS demo</title>
-  <link rel="stylesheet" href="experience.css?v=2026-11-16-pins">
-  <script src="experience.js?v=2026-11-16-pins" defer></script>
+  <link rel="stylesheet" href="experience.css?v=2026-11-16-wallets">
+  <script src="experience.js?v=2026-11-16-wallets" defer></script>
 </head>
 <body>
   <div class="notice"><span class="notice-dot"></span><strong>SIMULATION</strong><span>Not the real app. Do not enter real PINs, recovery phrases, or personal information.</span></div>
@@ -37,12 +37,13 @@
             <div><dt>Real profile</dt><dd id="state-real">Not created yet</dd></div>
             <div><dt>Wrong-PIN tries</dt><dd id="state-tries">0 (5 are free)</dd></div>
           </dl>
-          <p class="panel-note">The real app never shows which profile is open. This panel exists only in the demo, so you can see what the PINs did.</p>
+          <p class="panel-note">The real app never shows which profile is open. The label above the phone and this panel exist only in the demo, so you can see what the PINs did. “Wallet 1” and “Wallet 2” are demo names.</p>
           <p class="panel-try"><strong>Try it:</strong> Get started, Create profiles, lock (top left), enter <code>333333</code>, then lock and enter <code>111111</code>.</p>
           <button class="panel-reset" id="reset-demo">Reset demo (fresh install)</button>
         </aside>
       </div>
       <div class="phone-column">
+        <div class="wallet-tag" id="wallet-tag" data-state="none" role="status" aria-live="polite"><span class="tag-dot" aria-hidden="true"></span><span class="tag-text" id="wallet-tag-text">Fresh install · no wallets yet</span><span class="tag-demo">Demo label · not in the app</span></div>
         <div class="phone" aria-label="Interactive Zignal iOS simulation">
           <div class="phone-top"><span>9:41</span><span class="island"></span><span class="status-icons">▮▮▮ ◉ ▰</span></div>
           <div class="phone-body">
@@ -138,6 +139,7 @@
           </div>
           <div class="home-bar"></div>
         </div>
+        <p class="wallet-explain" id="wallet-explain" aria-live="polite">Tap Get started, then Create profiles. That makes Wallet 1 (your real profile) and Wallet 2 (the decoy).</p>
         <div class="phone-caption"><span class="notice-dot"></span> INTERACTIVE SIMULATION <span>·</span> NO REAL ACTIONS</div>
       </div>
     </section>

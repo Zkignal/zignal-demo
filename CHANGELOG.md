@@ -4,6 +4,19 @@ Every change to this site, newest first. Each entry says what changed, why, and 
 checked against. Earlier versions of changed files are kept in git history and, for local
 reference, in the git-ignored `archive/` folder.
 
+## 2026-11-16: which wallet is showing
+
+- **Label above the phone**, on the frame and marked "Demo label · not in the app": "Showing:
+  Wallet 1 · real profile" (blue), "Showing: Wallet 2 · decoy" (amber), "Locked", and
+  "Wallet 1 erased" once the panic PIN has run. Without it, it was hard to tell which wallet
+  was open, so the panic PIN's effect was easy to miss.
+- **A line under the phone** explains what just happened, for example "Panic PIN 333333
+  silently erased Wallet 1 and opened Wallet 2, the decoy. Nothing on the phone shows that
+  anything happened."
+- Kept off the phone's screen on purpose: the real app never shows which profile is open, so
+  a forced unlock can't reveal the decoy. The panel uses the same names.
+- Cache tags on the CSS and JS moved to `2026-11-16-wallets`.
+
 ## 2026-11-16: documentation
 
 - README: the screenshots' no-metadata check and how the files were made, the sources the PIN

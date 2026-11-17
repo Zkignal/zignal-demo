@@ -44,6 +44,12 @@ experimental and unaudited.
 - **Demo controls (beside the phone):** the demo PINs, what is on screen, whether the real
   profile still exists, the wrong-PIN count, and "Reset demo (fresh install)". The real app
   never shows which profile is open; the panel exists only so visitors can see what the PINs did.
+- **Wallet label and explanation (on the frame, outside the screen):** a label above the phone
+  says which wallet is showing: "Wallet 1 · real profile" (blue), "Wallet 2 · decoy" (amber),
+  "Locked", and "Wallet 1 erased" after the panic PIN. A line under the phone explains what the
+  last PIN did. Both are marked as demo labels: the real app shows neither, so that someone
+  forcing you to unlock can't tell the decoy from the real profile. "Wallet 1" and "Wallet 2"
+  are names used only in the demo.
 - **Chats:** the real or decoy profile, each with its own fictional wallet, and sample
   messages with local scripted contacts. Replies match topics such as greetings,
   invites, Tor, Prepare, wallet fees and the simulation's limits; anything else gets

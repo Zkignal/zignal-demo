@@ -11,6 +11,7 @@ const DEMO_WAIT_START = 5;   // seconds; the real app starts at 30
 const DEMO_WAIT_MAX = 60;    // seconds; the real app stops at 1 hour
 const device = {installed: false, realExists: false, open: null, tries: 0, waitUntil: 0, checking: false};
 let waitTimer = null;
+let lastEvent = "fresh"; // what the explanation under the phone describes
 
 function freshProfiles() {
   return {
@@ -187,16 +188,46 @@ function renderPanel() {
   document.getElementById("state-install").textContent = device.installed ? "Set up, demo PINs active" : "Fresh, not set up";
   const active = document.querySelector(".screen.active");
   let open = "Setup";
-  if (device.installed) open = device.open === "main" ? "Real profile (unlock PIN)" : device.open === "decoy" ? "Decoy profile (duress or panic PIN)" : "Locked: Enter PIN";
+  if (device.installed) open = device.open === "main" ? "Wallet 1 · real profile" : device.open === "decoy" ? "Wallet 2 · decoy" : "Locked: Enter PIN";
   else if (active && active.id === "welcome") open = "Welcome";
   document.getElementById("state-open").textContent = open;
   document.getElementById("state-real").textContent = !device.installed ? "Not created yet"
-    : device.realExists ? "On this phone" : "Erased by the panic PIN";
+    : device.realExists ? "Wallet 1 on this phone" : "Wallet 1 erased by the panic PIN";
   document.getElementById("state-tries").textContent = device.tries <= FREE_TRIES
     ? `${device.tries} (${FREE_TRIES} are free)` : `${device.tries} (waiting after each)`;
+  renderWalletTag();
+}
+
+// The label above the phone and the line under it. Demo only: the real app shows neither.
+function renderWalletTag() {
+  const tag = document.getElementById("wallet-tag");
+  const text = document.getElementById("wallet-tag-text");
+  const erased = device.installed && !device.realExists ? " · Wallet 1 erased" : "";
+  let state = "none";
+  if (!device.installed) text.textContent = "Fresh install · no wallets yet";
+  else if (device.open === "main") { state = "real"; text.textContent = "Showing: Wallet 1 · real profile"; }
+  else if (device.open === "decoy") { state = "decoy"; text.textContent = "Showing: Wallet 2 · decoy" + erased; }
+  else { state = "locked"; text.textContent = "Locked" + (erased || " · both wallets on this phone"); }
+  tag.dataset.state = state;
+  const explain = {
+    fresh: "Tap Get started, then Create profiles. That makes Wallet 1 (your real profile) and Wallet 2 (the decoy).",
+    reset: "Reset: a fresh install with no wallets. Tap Get started, then Create profiles.",
+    install: "Wallet 1 is your real profile. Lock (top left), then enter a PIN from the panel to see what each one opens.",
+    lock: device.realExists
+      ? "Locked. 111111 opens Wallet 1, 222222 opens Wallet 2 (the decoy), 333333 erases Wallet 1 and opens Wallet 2."
+      : "Locked. Wallet 1 is gone: 111111 is now a wrong PIN. 222222 and 333333 both open Wallet 2.",
+    unlock: "Unlock PIN 111111 opened Wallet 1, your real profile.",
+    duress: "Duress PIN 222222 opened Wallet 2, the decoy. Wallet 1 is untouched. The phone looks the same either way: the real app never says which wallet is open.",
+    panic: "Panic PIN 333333 silently erased Wallet 1 and opened Wallet 2, the decoy. Nothing on the phone shows that anything happened. Lock and try 111111: it's now a wrong PIN.",
+    panicAgain: "Panic PIN 333333 opened Wallet 2, the decoy. Wallet 1 was already erased.",
+    wrongAfterPanic: "111111 opens nothing now: the panic PIN erased Wallet 1, so its PIN is gone with it. Reset demo to start over.",
+    wrong: "Wrong PIN: it opens nothing. After 5 wrong PINs, each try waits (shortened here)."
+  };
+  document.getElementById("wallet-explain").textContent = explain[lastEvent] || "";
 }
 
 function install() {
+  lastEvent = "install";
   profiles = freshProfiles();
   Object.assign(device, {installed: true, realExists: true, tries: 0, waitUntil: 0});
   openProfile("main");
@@ -211,6 +242,7 @@ function openProfile(name) {
 
 function lock() {
   device.open = null;
+  lastEvent = "lock";
   document.getElementById("pin").value = "";
   document.getElementById("pin-status").textContent = "";
   updateUnlockButton();
@@ -247,9 +279,10 @@ function checkPin(pin) {
   // Counted before the check; any successful unlock resets the count (e7bd418).
   device.tries += 1;
   let opened = null;
-  if (pin === PINS.unlock && device.realExists) opened = "main";
-  else if (pin === PINS.duress) opened = "decoy";
+  if (pin === PINS.unlock && device.realExists) { opened = "main"; lastEvent = "unlock"; }
+  else if (pin === PINS.duress) { opened = "decoy"; lastEvent = "duress"; }
   else if (pin === PINS.panic) {
+    lastEvent = device.realExists ? "panic" : "panicAgain";
     if (device.realExists) {
       // Silent wipe: the real profile's slot, chats, contacts and wallet are gone.
       profiles.main = null;
@@ -263,6 +296,7 @@ function checkPin(pin) {
     openProfile(opened);
     return;
   }
+  lastEvent = pin === PINS.unlock ? "wrongAfterPanic" : "wrong";
   document.getElementById("pin-status").textContent = "Wrong PIN.";
   if (device.tries >= FREE_TRIES) {
     const wait = Math.min(DEMO_WAIT_MAX, DEMO_WAIT_START * 2 ** (device.tries - FREE_TRIES));
@@ -303,6 +337,7 @@ document.getElementById("reset-demo").addEventListener("click", () => {
   profiles = freshProfiles();
   profile = "main";
   Object.assign(device, {installed: false, realExists: false, open: null, tries: 0, waitUntil: 0, checking: false});
+  lastEvent = "reset";
   document.getElementById("pin").value = "";
   document.getElementById("pin-status").textContent = "";
   renderProfile();
