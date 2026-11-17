@@ -4,7 +4,7 @@ Every change to this site, newest first. Each entry says what changed, why, and 
 checked against. Earlier versions of changed files are kept in git history and, for local
 reference, in the git-ignored `archive/` folder.
 
-## 2026-11-16: which wallet is showing
+## 2026-11-16: which wallet is showing (`afaaeb1`)
 
 - **Label above the phone**, on the frame and marked "Demo label · not in the app": "Showing:
   Wallet 1 · real profile" (blue), "Showing: Wallet 2 · decoy" (amber), "Locked", and
@@ -17,7 +17,7 @@ reference, in the git-ignored `archive/` folder.
   a forced unlock can't reveal the decoy. The panel uses the same names.
 - Cache tags on the CSS and JS moved to `2026-11-16-wallets`.
 
-## 2026-11-16: documentation
+## 2026-11-16: documentation (`6e9b7e8`)
 
 - README: the screenshots' no-metadata check and how the files were made, the sources the PIN
   behaviour follows, how to try the panic PIN, the scope wording for the fictional profiles,
