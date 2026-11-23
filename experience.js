@@ -9,7 +9,8 @@ const PINS = {unlock: "111111", duress: "222222", panic: "333333"};
 const FREE_TRIES = 5;
 const DEMO_WAIT_START = 5;   // seconds; the real app starts at 30
 const DEMO_WAIT_MAX = 60;    // seconds; the real app stops at 1 hour
-const device = {installed: false, realExists: false, open: null, tries: 0, waitUntil: 0, checking: false};
+const DEMO_QUIET = 120;      // seconds with no wrong PIN before the count starts over; the real app: 2 hours
+const device = {installed: false, realExists: false, open: null, tries: 0, waitUntil: 0, lastWrong: 0, checking: false};
 let waitTimer = null;
 let lastEvent = "fresh"; // what the explanation under the phone describes
 
@@ -21,7 +22,7 @@ function freshProfiles() {
       sendState: 0,
       recording: false,
       screenshot: false,
-      tor: false,
+      tor: true,
       selectedContact: "demo",
       contacts: {
         demo: {
@@ -41,7 +42,7 @@ function freshProfiles() {
       sendState: 0,
       recording: false,
       screenshot: false,
-      tor: false,
+      tor: true,
       selectedContact: "demo",
       contacts: {
         demo: {
@@ -134,13 +135,14 @@ function scriptedReply(text, contact) {
     {match: /\b(recovery|phrase|seed|secret|password|credential)\b/, reply: "Please don't share real recovery words, passwords, or secrets. No recovery phrase exists here. The recovery screen uses placeholders only."},
     {match: /\b(panic|duress|decoy|pin|pins)\b/, reply: "Lock with the button at the top left, then use the demo PINs beside the phone: 111111 opens this profile, 222222 the decoy, and 333333 erases this profile (in page memory only) and opens the decoy. Reset demo starts over."},
     {match: /\b(secure|security|safe|privacy|encrypt|encrypted|encryption|crypto|cryptography|anonymous)\b/, reply: "This page does not encrypt anything or provide security. It is a browser simulation. The real app's source describes its protections, but the project is experimental and unaudited."},
-    {match: /\b(tor|vpn|network|server|servers|sync)\b/, reply: "The real app's Tor option covers sending and fetching transactions; syncing (block downloads, tree states and subtree roots) still connects directly. Open Network to try the illustrative switch; it changes no connections here."},
+    {match: /\b(tor|vpn|network|server|servers|sync)\b/, reply: "In the real app, Tor is on for new profiles and covers sending and fetching transactions; syncing (block downloads, tree states and subtree roots) still connects directly. Open Network to try the illustrative switch; it changes no connections here."},
     {match: /\b(split|splits|splitting|notes)\b/, reply: "In the real wallet, a split divides a confirmed balance into smaller spendable notes, so several messages can go out without waiting for the previous message's change. Prepare does this only when helpful. Here it's just a simulated state."},
     {match: /\b(prepare|preparing|ready|confirm|confirming|confirmations)\b/, reply: "Prepare divides a confirmed balance into smaller notes so several messages can go out in a row. Try Prepare on Chats, then Simulate confirmations to reach Ready. No real balance or confirmations are involved here."},
+    {match: /\b(restore|restoring|backup|restored)\b/, reply: "The real app advises against restoring: it brings back a wallet and identity, never chats. If you do, it asks which profile (PIN 1, PIN 2 or both) and a block height or date to scan from. This preview restores nothing."},
     {match: /\b(qr|invite|invites|scan|scanning|connect|contact|contacts)\b/, reply: "Open New chat to view a non-scannable invite illustration or add a fictional sample contact. No camera, clipboard, real invite, or wallet address is used."},
     {match: /\b(wallet|fund|funds|funding|money|balance|zec|fee|fees|pay|payment)\b/, reply: "All balances here are fictional DEMO units. Never send funds to this preview. In the real app, a message uses a shielded Zcash transaction and costs a network fee."},
-    {match: /\b(delivered|delivery|retry|resend|interrupted|transaction)\b/, reply: "The send-recovery walkthrough on Chats illustrates checking, retry, and delivery. In the real app, delivered means included in a block, not read. No transaction is created here."},
-    {match: /\b(ai|bot|script|scripted|human|real|reply|replies|respond)\b/, reply: "I'm a local scripted demo contact, not a person or AI. I match a few topics in your message and show a prepared reply. Nothing is sent to an external service."},
+    {match: /\b(delivered|delivery|retry|resend|interrupted|transaction|reply|waiting)\b/, reply: "The send-recovery walkthrough on Chats illustrates checking, retry, and delivery. In the real app, a message in a block shows \u201csent, waiting for a first reply\u201d until the contact has answered once, then \u201cdelivered\u201d. Neither means read. No transaction is created here."},
+    {match: /\b(ai|bot|script|scripted|human|real|replies|respond)\b/, reply: "I'm a local scripted demo contact, not a person or AI. I match a few topics in your message and show a prepared reply. Nothing is sent to an external service."},
     {match: /\b(help|what can|how does|how do|zignal|demo|testing|test)\b/, reply: "You can ask me about invites, Tor, Prepare, wallet fees, or the simulation's limits. You can also explore the recovery and profile screens. All of it stays fictional."},
     {match: /\b(how are you|hows it going|whats up)\b/, reply: "Ready to chat! I'm a scripted contact in a fictional conversation. How are you finding the demo?"},
     {match: /\b(thanks|thank you|thx)\b/, reply: "You're welcome! Try another message, or explore the other screens. I'm here with local, scripted replies."},
@@ -182,7 +184,7 @@ document.querySelectorAll("[data-screen]").forEach(button => {
   button.addEventListener("click", () => showScreen(button.dataset.screen));
 });
 
-// --- Install, lock and the three PINs (as in AppModel.unlock and VaultOps at e7bd418) ---
+// --- Install, lock and the three PINs (as in AppModel.unlock and VaultOps at e94d312) ---
 
 function renderPanel() {
   document.getElementById("state-install").textContent = device.installed ? "Set up, demo PINs active" : "Fresh, not set up";
@@ -193,6 +195,7 @@ function renderPanel() {
   document.getElementById("state-open").textContent = open;
   document.getElementById("state-real").textContent = !device.installed ? "Not created yet"
     : device.realExists ? "Wallet 1 on this phone" : "Wallet 1 erased by the panic PIN";
+  applyQuietPeriod();
   document.getElementById("state-tries").textContent = device.tries <= FREE_TRIES
     ? `${device.tries} (${FREE_TRIES} are free)` : `${device.tries} (waiting after each)`;
   renderWalletTag();
@@ -221,7 +224,7 @@ function renderWalletTag() {
     panic: "Panic PIN 333333 silently erased Wallet 1 and opened Wallet 2, the decoy. Nothing on the phone shows that anything happened. Lock and try 111111: it's now a wrong PIN.",
     panicAgain: "Panic PIN 333333 opened Wallet 2, the decoy. Wallet 1 was already erased.",
     wrongAfterPanic: "111111 opens nothing now: the panic PIN erased Wallet 1, so its PIN is gone with it. Reset demo to start over.",
-    wrong: "Wrong PIN: it opens nothing. After 5 wrong PINs, each try waits (shortened here)."
+    wrong: "Wrong PIN: it opens nothing. After 5 wrong PINs, each try waits (shortened here). Unlocking doesn't give tries back; only a quiet period with no wrong PIN does."
   };
   document.getElementById("wallet-explain").textContent = explain[lastEvent] || "";
 }
@@ -229,7 +232,7 @@ function renderWalletTag() {
 function install() {
   lastEvent = "install";
   profiles = freshProfiles();
-  Object.assign(device, {installed: true, realExists: true, tries: 0, waitUntil: 0});
+  Object.assign(device, {installed: true, realExists: true, tries: 0, waitUntil: 0, lastWrong: 0});
   openProfile("main");
 }
 
@@ -249,6 +252,14 @@ function lock() {
   showScreen("lock");
 }
 
+// The wrong-PIN count starts over only after a quiet period with no wrong PIN (shortened here).
+function applyQuietPeriod() {
+  if (device.tries > 0 && device.lastWrong && Date.now() - device.lastWrong >= DEMO_QUIET * 1000) {
+    device.tries = 0;
+    device.waitUntil = 0;
+  }
+}
+
 function remainingWait() {
   return Math.max(0, Math.ceil((device.waitUntil - Date.now()) / 1000));
 }
@@ -265,9 +276,11 @@ function showWait() {
     if (s > 0) {
       document.getElementById("pin-status").textContent =
         `Too many wrong PINs. Try again in ${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}.`;
+      document.getElementById("pin-rest").hidden = false;
     } else {
       clearInterval(waitTimer);
       document.getElementById("pin-status").textContent = "";
+      document.getElementById("pin-rest").hidden = true;
     }
     updateUnlockButton();
   };
@@ -276,7 +289,10 @@ function showWait() {
 }
 
 function checkPin(pin) {
-  // Counted before the check; any successful unlock resets the count (e7bd418).
+  // Counted before the check. A PIN that opens a profile takes back only its own count:
+  // unlocking never earns tries back (e94d312). The count starts over after a quiet period.
+  applyQuietPeriod();
+  const before = device.tries;
   device.tries += 1;
   let opened = null;
   if (pin === PINS.unlock && device.realExists) { opened = "main"; lastEvent = "unlock"; }
@@ -291,11 +307,11 @@ function checkPin(pin) {
     opened = "decoy";
   }
   if (opened) {
-    device.tries = 0;
-    device.waitUntil = 0;
+    device.tries = before;
     openProfile(opened);
     return;
   }
+  device.lastWrong = Date.now();
   lastEvent = pin === PINS.unlock ? "wrongAfterPanic" : "wrong";
   document.getElementById("pin-status").textContent = "Wrong PIN.";
   if (device.tries >= FREE_TRIES) {
@@ -336,10 +352,11 @@ document.getElementById("reset-demo").addEventListener("click", () => {
   clearInterval(waitTimer);
   profiles = freshProfiles();
   profile = "main";
-  Object.assign(device, {installed: false, realExists: false, open: null, tries: 0, waitUntil: 0, checking: false});
+  Object.assign(device, {installed: false, realExists: false, open: null, tries: 0, waitUntil: 0, lastWrong: 0, checking: false});
   lastEvent = "reset";
   document.getElementById("pin").value = "";
   document.getElementById("pin-status").textContent = "";
+  document.getElementById("pin-rest").hidden = true;
   renderProfile();
   showScreen("welcome");
 });
@@ -400,10 +417,11 @@ document.getElementById("confirm-prepare").addEventListener("click", () => {
 const sendSteps = [
   {status: "Ready to explore", detail: "One fictional message. No funds or network.", action: "Simulate sending", next: 1},
   {status: "Sending · simulated", detail: "The fictional transaction has been created.", action: "Simulate lock and unlock", next: 2},
-  {status: "Checking whether it went out… · simulated", detail: "Dev checks an interrupted send before showing a failure. Choose a scripted outcome below.", action: "Simulate transaction found", next: 3},
+  {status: "Checking whether it went out… · simulated", detail: "The app checks an interrupted send before showing a failure. After a minute it says: \u201cStill checking whether it went out: the wallet hasn't caught up with the network yet. Zignal keeps trying.\u201d Choose a scripted outcome below.", action: "Simulate transaction found", next: 3},
   {status: "Sent · simulated", detail: "The fictional transaction is waiting for a block, not a new send.", action: "Simulate inclusion in a block", next: 4},
-  {status: "Delivered · simulated", detail: "Included in a fictional block. This does not mean read.", action: "Walkthrough complete"},
-  {status: "Not sent · simulated", detail: "In this scenario broadcast failed, but the wallet still holds the transaction. Retry reuses it, instead of creating a second message.", action: "Tap to send again (simulation)", next: 3}
+  {status: "Sent, waiting for a first reply · simulated", detail: "Included in a fictional block. Until the contact has answered once in this chat, the app says this instead of \u201cdelivered\u201d: a block doesn't show that their phone could read it.", action: "Simulate the contact's first reply", next: 6},
+  {status: "Not sent · simulated", detail: "In this scenario broadcast failed, but the wallet still holds the transaction. Retry reuses it, instead of creating a second message.", action: "Tap to send again (simulation)", next: 3},
+  {status: "Delivered · simulated", detail: "Included in a fictional block, and the contact has replied before. Delivered still doesn't mean read.", action: "Walkthrough complete"}
 ];
 
 function renderSendRecovery() {

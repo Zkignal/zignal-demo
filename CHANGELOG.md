@@ -4,6 +4,39 @@ Every change to this site, newest first. Each entry says what changed, why, and 
 checked against. Earlier versions of changed files are kept in git history and, for local
 reference, in the git-ignored `archive/` folder.
 
+## 2026-11-22: the app's first release, private testing
+
+Source checked: Zignal at `e94d312` (`main` and `dev`, tag `private-testing-1`): `SetupViews`,
+`ChatViews`, `WalletViews`, `InviteViews`, `Components` (`PinStatus`), `AppModel`, `VaultOps`,
+`WalletSupport`, `ProfileSession`, README and CHANGELOG.
+
+- **Status:** Zignal is no longer part of the Zecathon and is in private testing on TestFlight,
+  with invited testers; no public link yet. Every link now points to `e94d312`; the README
+  anchor for the changes is `#since-the-zecathon-submission`.
+- **Wrong PINs:** unlocking no longer gives tries back; only a quiet period with no wrong PIN
+  starts the count over. The lock screen shows the app's "After 2 hours with no wrong PIN, the
+  count starts over." under the countdown. Shortened for the demo to 2 minutes, and labelled.
+- **Restore screen:** the app's red "Restoring isn't advised" warning, the choice of the PIN 1
+  profile, the PIN 2 profile or both, and a block height or a date (October 1, 2026 with
+  neither); a restored profile's notice that it came back without its chats.
+- **Tor:** on for new profiles, as in the app; the Network footer is the app's new text, and
+  the demo's switch starts on.
+- **Sending:** a message in a block says "sent, waiting for a first reply" until the contact has
+  answered once; the walkthrough gains that step and the app's slow-check text.
+- **Copy and share:** Add funds and Your invite name the app's Copy and Share buttons; copies
+  expire after 60 seconds and lock clears them. The first-message fee is about 0.00025 ZEC.
+- **Screenshots 15 to 20** (the warning before a chat starts over, the restore screens, a
+  restored profile's notice, the contact's side): the same files as `pics/` in the Zignal
+  repository, byte for byte, holding only the PNG chunks IHDR, IDAT and IEND.
+- "Latest" card, privacy and network cards, and roadmap brought up to the release.
+- Cache tags on the CSS and JS moved to `2026-11-22-private-testing`.
+- **Privacy policy:** new page `privacy.html`, linked from the footer and the privacy section:
+  what the app, this site and TestFlight collect. Checked against the app's code at `e94d312`
+  (`PrivacyInfo.xcprivacy`, the camera permission text, `WalletSupport`, `Keychain`,
+  `ProfileStore`), Apple's "TestFlight & Privacy" page and GitHub's Pages documentation. Links
+  inside the site are relative, so it can move to another domain unchanged. The same text is
+  `PRIVACY.md` in the Zignal repository.
+
 ## 2026-11-16: which wallet is showing (`afaaeb1`)
 
 - **Label above the phone**, on the frame and marked "Demo label · not in the app": "Showing:
