@@ -4,7 +4,23 @@ Every change to this site, newest first. Each entry says what changed, why, and 
 checked against. Earlier versions of changed files are kept in git history and, for local
 reference, in the git-ignored `archive/` folder.
 
-## 2026-11-22: the app's first release, private testing
+## 2026-11-23: the app's release private-testing-3, what the light server learns
+
+Source checked: Zignal at `51c8a45` (`main` and `dev`, tag `private-testing-3`): PRIVACY.md,
+README and CHANGELOG; `InviteViews` (no screen text changed since `e94d312`).
+
+- **Privacy policy:** `privacy.html` now says, like `PRIVACY.md`, that the light server
+  learns which transactions the app reads, because it fetches each one by its ID, with Tor
+  on or off; what Tor off and Tor on add; and what helps today. A new line in "In short".
+  Effective date November 23, 2026, the same as `PRIVACY.md`.
+- **Demo page:** the "Latest" card names `private-testing-3` (the camera turns off as soon
+  as an invite is read; the privacy policy's new text); the network card, the network
+  footnote and the roadmap say the same. The privacy section refers to the current release.
+- **Links** now point to `51c8a45`. The simulated screens are unchanged: the camera isn't
+  simulated, and the app's screen text is the same as at `e94d312`.
+- No CSS or JS change, so the cache tags stay `2026-11-22-private-testing`.
+
+## 2026-11-22: the app's first release, private testing (`5c43039`)
 
 Source checked: Zignal at `e94d312` (`main` and `dev`, tag `private-testing-1`): `SetupViews`,
 `ChatViews`, `WalletViews`, `InviteViews`, `Components` (`PinStatus`), `AppModel`, `VaultOps`,

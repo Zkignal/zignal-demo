@@ -89,10 +89,11 @@ network settings list servers that changed on November 15, and the wallet button
 
 ## How the phone simulation follows the app
 
-The text on the simulated screens is taken from the app's SwiftUI source at its first
-release, [`e94d312`](https://github.com/Zkignal/zignal/tree/e94d312cd55008fc411d0fe86d6ac437520ca9ac)
+The text on the simulated screens is taken from the app's SwiftUI source at its release
+`private-testing-3`, [`51c8a45`](https://github.com/Zkignal/zignal/tree/51c8a45ed2f7f9ff1087eb40d4c9c0313fc81545)
 (`SetupViews` including the `UnlockView` lock screen and the restore screen, `ChatViews`,
-`WalletViews`, `InviteViews`, `RecoveryViews`, `ScreenCapture`, `Components`), from
+`WalletViews`, `InviteViews`, `RecoveryViews`, `ScreenCapture`, `Components`; their text is
+unchanged since the first release, `e94d312`), from
 `WalletSupport.swift` for the default servers, and from `AppModel.unlock`, `VaultOps` and the
 README's "Duress and panic" section for what each PIN does. Where the
 browser can't do what the app does (the PIN fields of setup, camera, QR codes, real balances,
@@ -106,8 +107,8 @@ documentation and the lightwalletd project.
 
 ## The real app, as its documentation describes it
 
-Summarized from the Zignal repository's first release (tag `private-testing-1`),
-[`e94d312`](https://github.com/Zkignal/zignal/tree/e94d312cd55008fc411d0fe86d6ac437520ca9ac).
+Summarized from the Zignal repository's release `private-testing-3`,
+[`51c8a45`](https://github.com/Zkignal/zignal/tree/51c8a45ed2f7f9ff1087eb40d4c9c0313fc81545).
 None of this runs in the demo.
 
 - Every message is one shielded Zcash transaction. Zignal adds an end-to-end messaging
@@ -123,7 +124,8 @@ None of this runs in the demo.
 - The light server you choose sees your network requests. Tor is on for new profiles: sending
   and fetching go over Tor; syncing (block downloads, tree states and subtree roots) still
   connects directly. Your own server or a VPN changes who sees connection metadata,
-  but neither makes anyone anonymous by itself.
+  but neither makes anyone anonymous by itself. With Tor on or off, the server learns which
+  transactions the wallet reads, though not what's in them; hiding that is on the roadmap.
 
 ### Cryptography caveats
 
@@ -134,7 +136,7 @@ message length can reveal information.
 
 These are the project's own descriptions, not an independent security assessment.
 Read the
-[security notes](https://github.com/Zkignal/zignal/blob/e94d312cd55008fc411d0fe86d6ac437520ca9ac/README.md#security-notes-and-known-limitations)
+[security notes](https://github.com/Zkignal/zignal/blob/51c8a45ed2f7f9ff1087eb40d4c9c0313fc81545/README.md#security-notes-and-known-limitations)
 and the current source before relying on any security claim.
 
 ## Run locally

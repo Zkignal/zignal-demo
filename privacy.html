@@ -16,7 +16,7 @@
   <main class="policy">
     <div class="eyebrow"><span></span> PRIVACY POLICY</div>
     <h1>Privacy</h1>
-    <p class="policy-date">Effective November 22, 2026.</p>
+    <p class="policy-date">Effective November 23, 2026.</p>
     <p>Zignal is a private messenger that sends messages inside shielded Zcash transactions. There is no Zignal server and no Zignal account. We, the developer of Zignal, don’t collect, receive or store anything you type, send or keep in the app. Zignal is experimental and has not been audited.</p>
     <p>This page covers the Zignal iPhone app, the Zignal demo website, and Apple’s TestFlight, which delivers the app to testers.</p>
 
@@ -27,6 +27,7 @@
       <tr><th scope="row">Logs or crash reporting by Zignal</th><td>None (Apple’s TestFlight sends crash reports; see below)</td></tr>
       <tr><th scope="row">Where your data lives</th><td>On your phone, encrypted</td></tr>
       <tr><th scope="row">What we can hand over if asked</th><td>Nothing from the app: we never have it</td></tr>
+      <tr><th scope="row">What the light server can learn</th><td>Which transactions you read, not what’s in them (see below)</td></tr>
     </table>
 
     <h2>The app</h2>
@@ -43,9 +44,11 @@
     </ul>
     <h3>What the server sees</h3>
     <ul>
-      <li><strong>Tor off:</strong> your IP address with every request: transactions you send, transactions it fetches for you, and blocks you download.</li>
-      <li><strong>Tor on (the default for new profiles):</strong> sending and fetching go through Tor, so the server sees a Tor exit instead of your IP address. Block downloads still connect directly, so the server learns that you use Zcash and when you sync. The Tor network’s entry relay sees your IP address but not what you send.</li>
-      <li>The app’s README explains this in detail, including how a VPN helps: <a href="https://github.com/Zkignal/zignal/blob/e94d312cd55008fc411d0fe86d6ac437520ca9ac/README.md#network-privacy-tor-a-vpn-or-your-own-server" target="_blank" rel="noopener noreferrer">network privacy ↗</a>.</li>
+      <li><strong>Which transactions you read:</strong> to read a message, the app asks the server for that transaction by its ID, and it checks the messages you send the same way until they are mined. So the server learns which transactions carry messages for you, with Tor on or off. It can’t read them: the messages stay encrypted. We are working on hiding this.</li>
+      <li><strong>Tor off:</strong> the server also sees your IP address with every request: transactions you send, the ones you read, and blocks you download. Together with the transaction IDs, that shows who reads which message and, if the same server saw it sent, who wrote to whom.</li>
+      <li><strong>Tor on (the default for new profiles):</strong> sending and reading go through Tor, so the server sees a Tor exit instead of your IP address. Block downloads still connect directly, so the server learns that you use Zcash and when you sync, and it may link the transactions you read to that sync by their timing. The Tor network’s entry relay sees your IP address but not what you send.</li>
+      <li><strong>What helps today:</strong> keep Tor on (Network settings), add a VPN with a kill switch, or use a light server you run yourself.</li>
+      <li>The app’s README explains this in detail, including how a VPN helps: <a href="https://github.com/Zkignal/zignal/blob/51c8a45ed2f7f9ff1087eb40d4c9c0313fc81545/README.md#network-privacy-tor-a-vpn-or-your-own-server" target="_blank" rel="noopener noreferrer">network privacy ↗</a>.</li>
     </ul>
     <h3>Phone permissions</h3>
     <ul>
