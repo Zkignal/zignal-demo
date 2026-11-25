@@ -4,7 +4,24 @@ Every change to this site, newest first. Each entry says what changed, why, and 
 checked against. Earlier versions of changed files are kept in git history and, for local
 reference, in the git-ignored `archive/` folder.
 
-## 2026-11-23: the app's release private-testing-3, what the light server learns
+## 2026-11-25: the app's release private-testing-4, reminders and the live feed
+
+Source checked: Zignal at `72ba91f` (`main` and `dev`, tag `private-testing-4`): PRIVACY.md,
+README, SECURITY.md and CHANGELOG; `WalletViews` (the Network screen's Tor note) and
+`ChatViews`.
+
+- **Privacy policy:** `privacy.html` now has, like `PRIVACY.md`, the notification permission
+  (optional reminders the iPhone makes, never saying whether anything arrived) and the
+  wallet's live feed of new transactions, which connects directly even with Tor on.
+  Effective date November 25, 2026, the same as `PRIVACY.md`.
+- **Demo page:** the "Latest" card names `private-testing-4` (new-message marks, reminders,
+  block times checked against block height, the full invite address check); the simulated
+  Network screen quotes the app's new Tor note; the limits card, the network card and its
+  footnote name the live feed. The intro no longer says there is no public TestFlight link.
+- **Links** now point to `72ba91f`. The reminders and new-message marks aren't simulated. No
+  CSS or JS change, so the cache tags stay `2026-11-22-private-testing`.
+
+## 2026-11-23: the app's release private-testing-3, what the light server learns (`ce8121a`)
 
 Source checked: Zignal at `51c8a45` (`main` and `dev`, tag `private-testing-3`): PRIVACY.md,
 README and CHANGELOG; `InviteViews` (no screen text changed since `e94d312`).

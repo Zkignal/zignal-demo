@@ -90,10 +90,11 @@ network settings list servers that changed on November 15, and the wallet button
 ## How the phone simulation follows the app
 
 The text on the simulated screens is taken from the app's SwiftUI source at its release
-`private-testing-3`, [`51c8a45`](https://github.com/Zkignal/zignal/tree/51c8a45ed2f7f9ff1087eb40d4c9c0313fc81545)
+`private-testing-4`, [`72ba91f`](https://github.com/Zkignal/zignal/tree/72ba91fbbb199d1a817c3626383e99de01ebc568)
 (`SetupViews` including the `UnlockView` lock screen and the restore screen, `ChatViews`,
-`WalletViews`, `InviteViews`, `RecoveryViews`, `ScreenCapture`, `Components`; their text is
-unchanged since the first release, `e94d312`), from
+`WalletViews`, `InviteViews`, `RecoveryViews`, `ScreenCapture`, `Components`; the Network
+screen's Tor note follows `72ba91f`, the rest is unchanged since the first release,
+`e94d312`; the reminders and new-message marks aren't simulated), from
 `WalletSupport.swift` for the default servers, and from `AppModel.unlock`, `VaultOps` and the
 README's "Duress and panic" section for what each PIN does. Where the
 browser can't do what the app does (the PIN fields of setup, camera, QR codes, real balances,
@@ -107,8 +108,8 @@ documentation and the lightwalletd project.
 
 ## The real app, as its documentation describes it
 
-Summarized from the Zignal repository's release `private-testing-3`,
-[`51c8a45`](https://github.com/Zkignal/zignal/tree/51c8a45ed2f7f9ff1087eb40d4c9c0313fc81545).
+Summarized from the Zignal repository's release `private-testing-4`,
+[`72ba91f`](https://github.com/Zkignal/zignal/tree/72ba91fbbb199d1a817c3626383e99de01ebc568).
 None of this runs in the demo.
 
 - Every message is one shielded Zcash transaction. Zignal adds an end-to-end messaging
@@ -121,11 +122,16 @@ None of this runs in the demo.
   experimental features, not guarantees.
 - Zignal is no longer part of the Zecathon; it is in private testing on TestFlight, with
   invited testers.
-- The light server you choose sees your network requests. Tor is on for new profiles: sending
-  and fetching go over Tor; syncing (block downloads, tree states and subtree roots) still
-  connects directly. Your own server or a VPN changes who sees connection metadata,
-  but neither makes anyone anonymous by itself. With Tor on or off, the server learns which
-  transactions the wallet reads, though not what's in them; hiding that is on the roadmap.
+- The light server you choose sees your network requests. Tor is on for new profiles:
+  sending and fetching go over Tor; syncing (block downloads, tree states and subtree roots)
+  and the live feed of new transactions still connect directly. Your own server or a VPN
+  changes who sees connection metadata, but neither makes anyone anonymous by itself. With
+  Tor on or off, the server learns which transactions the wallet reads, though not what's in
+  them; hiding that is on the roadmap. The app checks the server's block times against block
+  height instead of trusting them.
+- Optional reminders are notifications the iPhone makes, every day at a time or after a
+  length of time you pick. There is no push server, and they never say whether anything
+  arrived.
 
 ### Cryptography caveats
 
@@ -136,7 +142,7 @@ message length can reveal information.
 
 These are the project's own descriptions, not an independent security assessment.
 Read the
-[security notes](https://github.com/Zkignal/zignal/blob/51c8a45ed2f7f9ff1087eb40d4c9c0313fc81545/README.md#security-notes-and-known-limitations)
+[security notes](https://github.com/Zkignal/zignal/blob/72ba91fbbb199d1a817c3626383e99de01ebc568/README.md#security-notes-and-known-limitations)
 and the current source before relying on any security claim.
 
 ## Run locally

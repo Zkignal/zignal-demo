@@ -16,7 +16,7 @@
   <main class="policy">
     <div class="eyebrow"><span></span> PRIVACY POLICY</div>
     <h1>Privacy</h1>
-    <p class="policy-date">Effective November 23, 2026.</p>
+    <p class="policy-date">Effective November 25, 2026.</p>
     <p>Zignal is a private messenger that sends messages inside shielded Zcash transactions. There is no Zignal server and no Zignal account. We, the developer of Zignal, don’t collect, receive or store anything you type, send or keep in the app. Zignal is experimental and has not been audited.</p>
     <p>This page covers the Zignal iPhone app, the Zignal demo website, and Apple’s TestFlight, which delivers the app to testers.</p>
 
@@ -46,15 +46,16 @@
     <ul>
       <li><strong>Which transactions you read:</strong> to read a message, the app asks the server for that transaction by its ID, and it checks the messages you send the same way until they are mined. So the server learns which transactions carry messages for you, with Tor on or off. It can’t read them: the messages stay encrypted. We are working on hiding this.</li>
       <li><strong>Tor off:</strong> the server also sees your IP address with every request: transactions you send, the ones you read, and blocks you download. Together with the transaction IDs, that shows who reads which message and, if the same server saw it sent, who wrote to whom.</li>
-      <li><strong>Tor on (the default for new profiles):</strong> sending and reading go through Tor, so the server sees a Tor exit instead of your IP address. Block downloads still connect directly, so the server learns that you use Zcash and when you sync, and it may link the transactions you read to that sync by their timing. The Tor network’s entry relay sees your IP address but not what you send.</li>
+      <li><strong>Tor on (the default for new profiles):</strong> sending and reading go through Tor, so the server sees a Tor exit instead of your IP address. Block downloads still connect directly, and so does the wallet’s live feed of new transactions (the ones not mined yet, the same for every wallet), which stays open while the app is unlocked so that a message shows up within seconds. So the server learns that you use Zcash and when the app is open, and it may link the transactions you read to that by their timing. The Tor network’s entry relay sees your IP address but not what you send.</li>
       <li><strong>What helps today:</strong> keep Tor on (Network settings), add a VPN with a kill switch, or use a light server you run yourself.</li>
-      <li>The app’s README explains this in detail, including how a VPN helps: <a href="https://github.com/Zkignal/zignal/blob/51c8a45ed2f7f9ff1087eb40d4c9c0313fc81545/README.md#network-privacy-tor-a-vpn-or-your-own-server" target="_blank" rel="noopener noreferrer">network privacy ↗</a>.</li>
+      <li>The app’s README explains this in detail, including how a VPN helps: <a href="https://github.com/Zkignal/zignal/blob/72ba91fbbb199d1a817c3626383e99de01ebc568/README.md#network-privacy-tor-a-vpn-or-your-own-server" target="_blank" rel="noopener noreferrer">network privacy ↗</a>.</li>
     </ul>
     <h3>Phone permissions</h3>
     <ul>
       <li><strong>Camera:</strong> only to scan a contact’s invite QR code on the New chat screen. Apple’s scanner reads the code on the phone; no picture is saved or sent. You can paste the invite instead.</li>
       <li><strong>Pasteboard:</strong> what you copy in Zignal stays on this phone (no Universal Clipboard) and expires after 60 seconds. Locking the app removes it sooner.</li>
-      <li>Zignal doesn’t ask for your contacts, photos, location, microphone or notifications.</li>
+      <li><strong>Notifications:</strong> only if you turn on a reminder: every day at a time you pick, or after a length of time you pick, once or again and again. Your iPhone makes it; it always says the same words and never whether anything arrived. No push service and no server are involved, and Zignal still checks nothing while it’s locked.</li>
+      <li>Zignal doesn’t ask for your contacts, photos, location or microphone.</li>
     </ul>
 
     <h2>The demo website</h2>
