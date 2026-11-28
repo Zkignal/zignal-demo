@@ -90,7 +90,7 @@ network settings list servers that changed on November 15, and the wallet button
 ## How the phone simulation follows the app
 
 The text on the simulated screens is taken from the app's SwiftUI source at its release
-`private-testing-4`, [`72ba91f`](https://github.com/Zkignal/zignal/tree/72ba91fbbb199d1a817c3626383e99de01ebc568)
+`private-testing-5`, [`6853f15`](https://github.com/Zkignal/zignal/tree/6853f151d9a3a2eca258038d5229e98b68a1b732)
 (`SetupViews` including the `UnlockView` lock screen and the restore screen, `ChatViews`,
 `WalletViews`, `InviteViews`, `RecoveryViews`, `ScreenCapture`, `Components`; the Network
 screen's Tor note follows `72ba91f`, the rest is unchanged since the first release,
@@ -108,8 +108,8 @@ documentation and the lightwalletd project.
 
 ## The real app, as its documentation describes it
 
-Summarized from the Zignal repository's release `private-testing-4`,
-[`72ba91f`](https://github.com/Zkignal/zignal/tree/72ba91fbbb199d1a817c3626383e99de01ebc568).
+Summarized from the Zignal repository's release `private-testing-5`,
+[`6853f15`](https://github.com/Zkignal/zignal/tree/6853f151d9a3a2eca258038d5229e98b68a1b732).
 None of this runs in the demo.
 
 - Every message is one shielded Zcash transaction. Zignal adds an end-to-end messaging
@@ -128,7 +128,8 @@ None of this runs in the demo.
   changes who sees connection metadata, but neither makes anyone anonymous by itself. With
   Tor on or off, the server learns which transactions the wallet reads, though not what's in
   them; hiding that is on the roadmap. The app checks the server's block times against block
-  height instead of trusting them.
+  height instead of trusting them, and it no longer uses the phone's date for anything. When
+  a request can't get through Tor, it says so and sends or fetches nothing another way.
 - Optional reminders are notifications the iPhone makes, every day at a time or after a
   length of time you pick. There is no push server, and they never say whether anything
   arrived.
@@ -142,7 +143,7 @@ message length can reveal information.
 
 These are the project's own descriptions, not an independent security assessment.
 Read the
-[security notes](https://github.com/Zkignal/zignal/blob/72ba91fbbb199d1a817c3626383e99de01ebc568/README.md#security-notes-and-known-limitations)
+[security notes](https://github.com/Zkignal/zignal/blob/6853f151d9a3a2eca258038d5229e98b68a1b732/README.md#security-notes-and-known-limitations)
 and the current source before relying on any security claim.
 
 ## Run locally

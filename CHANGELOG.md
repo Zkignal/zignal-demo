@@ -4,7 +4,27 @@ Every change to this site, newest first. Each entry says what changed, why, and 
 checked against. Earlier versions of changed files are kept in git history and, for local
 reference, in the git-ignored `archive/` folder.
 
-## 2026-11-25: the app's release private-testing-4, reminders and the live feed
+## 2026-11-28: the app's release private-testing-5, the height clock and the Tor message
+
+Source checked: Zignal at `6853f15` (`main` and `dev`, tag `private-testing-5`): PRIVACY.md
+and SECURITY.md (both unchanged since `72ba91f`), README and CHANGELOG; `WalletViews` (the
+Network screen, unchanged) and `ChatViews`.
+
+- **Demo page:** the "Latest" card names `private-testing-5`: the phone's date no longer
+  decides anything, a light server's refusal is shown as one short quoted line, a contact's
+  address is fully checked before every send, and a request that can't get through Tor says
+  so. The intro and the source notes name the release. Under the card, a new link goes to
+  the repository's notes for Zcash developers; it follows `main`, so it shows the newest
+  version.
+- **README:** the network point says the app no longer uses the phone's date, and what it
+  does when a request can't get through Tor.
+- **Privacy policy:** no change in wording. `PRIVACY.md` is unchanged, so the effective date
+  stays November 25, 2026; only the page's link moves.
+- **Links** to the app's README and changelog now point to `6853f15`. The chat list's note
+  about block times and the Tor message aren't simulated. No CSS or JS change, so the cache
+  tags stay `2026-11-22-private-testing`.
+
+## 2026-11-25: the app's release private-testing-4, reminders and the live feed (`d1a1b1f`)
 
 Source checked: Zignal at `72ba91f` (`main` and `dev`, tag `private-testing-4`): PRIVACY.md,
 README, SECURITY.md and CHANGELOG; `WalletViews` (the Network screen's Tor note) and
